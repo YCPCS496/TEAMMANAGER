@@ -11,7 +11,7 @@ import java.util.LinkedList;
  */
 public class User {
 	
-	private String password;
+	private String passwordHash;
 	private String username;
 	private String firstname;
 	private String lastname;
@@ -19,12 +19,7 @@ public class User {
 	private LinkedList<String> teamsBelonging;
 	private LinkedList<String> teamsOwned;
 
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -48,6 +43,18 @@ public class User {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	/**
+	 * @return the passwordHash
+	 */
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+	/**
+	 * @param passwordHash the passwordHash to set
+	 */
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 	
 }
