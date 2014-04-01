@@ -12,7 +12,7 @@ import edu.ycp.TeamManager.persist.IDatabase;
  *
  */
 public class VerifyLogin {
-	public String verifyLogin(LoginData data){
+	public Boolean verifyLogin(LoginData data){
 		IDatabase db = Database.getInstance();
 		return db.Login(data);
 	}
