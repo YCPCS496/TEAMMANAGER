@@ -13,11 +13,11 @@ public interface IDatabase {
 	public boolean makeuser(User use);
 	
 	/**
-	 *  Logs the user in to the system, returns session ID and stores session ID
+	 *  Logs the user in to the syste
 	 * 
-	 * @param login
-	 * @return session id if matches, 0 if not
+	 * @param login {@link LoginData}
+	 * @return if credentials are valid returns true
 	 */
-	public String Login(LoginData login);
+	public Boolean Login(LoginData login);
 	
 }

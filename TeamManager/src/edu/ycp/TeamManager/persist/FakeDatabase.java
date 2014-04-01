@@ -19,10 +19,10 @@ public class FakeDatabase implements IDatabase {
 	@Override
 	public boolean makeuser(User use) {
 		for(User us: users){
+			// make sure username does not exist
 			if(us.getUsername().equals(use.getUsername())){
 				return false;
 			}
-			
 		}
 		
 		users.add(use);
@@ -30,18 +30,20 @@ public class FakeDatabase implements IDatabase {
 	}
 
 	@Override
-	public String Login(LoginData login) {
+	public Boolean Login(LoginData login) {
+		
 		for(User user: users){
+			// find the user in the db
 			if(user.getUsername().equals(login.getUsername())){
+				// verify password
 				if(login.getPasswordHash().equals(user.getPasswordHash())){
 					
-					user.setPasswordHash("Some string");
-					return "Some string";
+					return true;
 				}
 			}
 			
 		}
-		return null;
+		return false;
 	}
 
 }
