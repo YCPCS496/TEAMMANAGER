@@ -16,6 +16,7 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private String email;
+	private String sessionHash;
 	private LinkedList<String> teamsBelonging;
 	private LinkedList<String> teamsOwned;
 	
@@ -36,10 +37,20 @@ public class User {
 		this.email = email;
 		this.teamsBelonging.addAll(belonged);
 		this.teamsOwned.addAll(owned);
+		this.sessionHash = new String("");
 	}
 	
+	/**
+	 * constructs an empty user
+	 */
 	public User(){
-		
+		username = new String(" ");
+		passwordHash = new String(" ");
+		firstname = new String(" ");
+		lastname = new String(" ");
+		email = new String(" ");
+		teamsBelonging = new LinkedList<String>();
+		teamsOwned = new LinkedList<String>();
 	}
 	/**
 	 * 
@@ -130,6 +141,20 @@ public class User {
 	 */
 	public void addTeamOwned(String teamName) {
 		teamsOwned.add(teamName);
+	}
+
+	/**
+	 * @return the sessionHash
+	 */
+	public String getSessionHash() {
+		return sessionHash;
+	}
+
+	/**
+	 * @param sessionHash the sessionHash to set
+	 */
+	public void setSessionHash(String sessionHash) {
+		this.sessionHash = sessionHash;
 	}
 	
 }
