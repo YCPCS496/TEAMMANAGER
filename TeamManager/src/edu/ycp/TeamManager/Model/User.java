@@ -35,8 +35,8 @@ public class User {
 		this.firstname = first;
 		this.lastname = last;
 		this.email = email;
-		this.teamsBelonging.addAll(belonged);
-		this.teamsOwned.addAll(owned);
+		//this.teamsBelonging.addAll(belonged);
+		//this.teamsOwned.addAll(owned);
 		this.sessionHash = new String("");
 	}
 	

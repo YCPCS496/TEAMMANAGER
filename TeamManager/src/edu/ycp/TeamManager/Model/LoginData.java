@@ -3,7 +3,6 @@ package edu.ycp.TeamManager.Model;
 public class LoginData {
 	private String username;
 	private String password;
-	private String passwordHash;
 	/**
 	 * Constructor for logindata
 	 * 
@@ -13,7 +12,6 @@ public class LoginData {
 	public LoginData(String username, String pass){
 		this.username = username;
 		this.password = pass;
-		this.setPasswordHash(new String(" "));
 		
 	}
 	
@@ -23,7 +21,6 @@ public class LoginData {
 	public LoginData(){
 		username = new String(" ");
 		password = new String(" ");
-		this.setPasswordHash(new String(" "));
 	}
 	/**
 	 * @return the username
@@ -50,19 +47,5 @@ public class LoginData {
 		this.password = password;
 	}
 
-	/**
-	 * @return the passwordHash
-	 */
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-
-	/**
-	 * @param passwordHash the passwordHash to set
-	 */
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
-	
 	
 }

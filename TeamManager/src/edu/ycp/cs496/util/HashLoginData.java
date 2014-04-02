@@ -3,15 +3,18 @@
  */
 package edu.ycp.cs496.util;
 
-import edu.ycp.TeamManager.Model.LoginData;
 
 /**
  * @author dan
  *
  */
 public class HashLoginData {
-	public void hashData(LoginData data){
-		//TODO: hash the data and overright password
-		
+	/**
+	 * 
+	 * @param data
+	 * @return the hash of the data inputed
+	 */
+	public String hashData(String data){
+		return BCrypt.hashpw(data, BCrypt.gensalt());	
 	}
 }
