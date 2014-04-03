@@ -6,6 +6,8 @@ import java.util.LinkedList;
 
 import javax.servlet.http.*;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import edu.ycp.TeamManager.Model.LoginData;
 import edu.ycp.TeamManager.Model.User;
@@ -56,7 +58,11 @@ public class TeamManagerServlet extends HttpServlet {
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
 			
-			//TODO: sanitize this data
+			//sanitizes input
+			username = Jsoup.clean(username, Whitelist.basic());
+			password = Jsoup.clean(password, Whitelist.basic());
+			
+			
 			LoginData data = new LoginData(username, password);
 			
 			VerifyLogin controller = new VerifyLogin();
@@ -85,15 +91,27 @@ public class TeamManagerServlet extends HttpServlet {
 		if(action.equals("newUser")){
 			resp.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
 			if(req.getParameter("password1").equals(req.getParameter("password2"))){
+				
+				// gets info for new account
 				String username = req.getParameter("username");
 				String password = req.getParameter("password1");
 				String firstname = req.getParameter("firstname");
 				String lastname = req.getParameter("lastname");
 				String email = req.getParameter("email");
 				
+				// sanitizes input
+				username = Jsoup.clean(username, Whitelist.basic());
+				password = Jsoup.clean(password, Whitelist.basic());
+				firstname = Jsoup.clean(firstname, Whitelist.basic());
+				lastname = Jsoup.clean(lastname, Whitelist.basic());
+				email = Jsoup.clean(email, Whitelist.basic());
+				// creates new user
 				User newuse = new User(username, firstname, lastname, email, HashLoginData.hashData(password), new LinkedList<String>(), new LinkedList<String>());
 				AddUser controller = new AddUser();
+				
+				//adds new user to account
 				boolean test = controller.addUser(newuse);
+				//checks if user was added
 				if(test){
 					resp.setStatus(HttpServletResponse.SC_OK);
 					resp.setContentType("text/plain");
