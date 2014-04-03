@@ -14,6 +14,7 @@ public class Workout {
 	private int durationMin;
 	private int intensity;
 	private int reps;
+	private String id;
 	
 	/**
 	 * Constructs empty workout
@@ -25,6 +26,7 @@ public class Workout {
 		this.durationMin = 0;
 		this.intensity = 0;
 		this.reps =  0;
+		this.id = " "; 
 		
 	}
 	/**
@@ -36,12 +38,13 @@ public class Workout {
 	 * @param intensity
 	 * @param reps
 	 */
-	public Workout(String title, String notes, int durationMin, int intensity, int reps){
+	public Workout(String id, String title, String notes, int durationMin, int intensity, int reps){
 		this.title = title;
 		this.notes = notes;
 		this.durationMin = durationMin;
 		this.intensity = intensity;
 		this.reps = reps;
+		this.id = id;
 	}
 
 	/**
@@ -112,6 +115,18 @@ public class Workout {
 	 */
 	public void setReps(int reps) {
 		this.reps = reps;
+	}
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

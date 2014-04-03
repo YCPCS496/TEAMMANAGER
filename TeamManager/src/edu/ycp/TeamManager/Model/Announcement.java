@@ -16,6 +16,7 @@ public class Announcement {
 	private List<String> usersNotViewed;
 	private String title;
 	private String message;
+	private String id;
 	
 	/**
 	 * constructs an empty announcement
@@ -25,6 +26,7 @@ public class Announcement {
 		usersViewed = new LinkedList<String>();
 		title = new String(" ");
 		message = new String(" ");
+		id = " ";
 		
 	}
 	
@@ -36,11 +38,12 @@ public class Announcement {
 	 * @param usersNotViewed
 	 * @param usersViewed
 	 */
-	public Announcement(String title, String message, List<String> usersNotViewed, List<String> usersViewed){
+	public Announcement(String id, String title, String message, List<String> usersNotViewed, List<String> usersViewed){
 		this.title = title;
 		this.message = message;
 		this.usersNotViewed = usersNotViewed;
 		this.usersViewed = usersViewed;
+		this.id = id;
 	}
 	/**
 	 * 

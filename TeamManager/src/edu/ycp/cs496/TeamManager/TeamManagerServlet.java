@@ -58,6 +58,7 @@ public class TeamManagerServlet extends HttpServlet {
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
 			
+			
 			//sanitizes input
 			username = Jsoup.clean(username, Whitelist.basic());
 			password = Jsoup.clean(password, Whitelist.basic());
@@ -99,6 +100,7 @@ public class TeamManagerServlet extends HttpServlet {
 				String lastname = req.getParameter("lastname");
 				String email = req.getParameter("email");
 				
+				
 				// sanitizes input
 				username = Jsoup.clean(username, Whitelist.basic());
 				password = Jsoup.clean(password, Whitelist.basic());
@@ -106,6 +108,8 @@ public class TeamManagerServlet extends HttpServlet {
 				lastname = Jsoup.clean(lastname, Whitelist.basic());
 				email = Jsoup.clean(email, Whitelist.basic());
 				// creates new user
+				 
+				 
 				User newuse = new User(username, firstname, lastname, email, HashLoginData.hashData(password), new LinkedList<String>(), new LinkedList<String>());
 				AddUser controller = new AddUser();
 				
