@@ -35,8 +35,12 @@ public class User {
 		this.firstname = first;
 		this.lastname = last;
 		this.email = email;
-		//this.teamsBelonging.addAll(belonged);
-		//this.teamsOwned.addAll(owned);
+		for(String team: belonged){
+			this.teamsBelonging.add(team);
+		}
+		for(String team: owned){
+			this.teamsOwned.add(team);
+		}
 		this.sessionHash = new String("");
 	}
 	

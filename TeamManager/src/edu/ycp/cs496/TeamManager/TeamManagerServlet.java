@@ -2,13 +2,16 @@ package edu.ycp.cs496.TeamManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.servlet.http.*;
 
 import com.google.appengine.api.urlfetch.HTTPResponse;
 
 import edu.ycp.TeamManager.Model.LoginData;
+import edu.ycp.TeamManager.Model.User;
 import edu.ycp.TeamManager.control.VerifyLogin;
+import edu.ycp.cs496.util.BCrypt;
 
 @SuppressWarnings("serial")
 public class TeamManagerServlet extends HttpServlet {
@@ -40,18 +43,17 @@ public class TeamManagerServlet extends HttpServlet {
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
 			
-			//sanitize this
+			//TODO: sanitize this data
 			LoginData data = new LoginData(username, password);
 			
 			VerifyLogin controller = new VerifyLogin();
 			if(controller.verifyLogin(data)){
-				Cookie logincookie = new Cookie("TeamManUser", username);
-				logincookie.setMaxAge(-1);
-				resp.addCookie(logincookie);
-				
+				HttpSession session= req.getSession();
+				session.setAttribute("user", data.getUsername());
+				session.setMaxInactiveInterval(30*60);
 				resp.setStatus(HttpServletResponse.SC_OK);
 				resp.setContentType("text/plain");
-				resp.getWriter().println("Welcome " + username);
+				resp.getWriter().println("Welcome " + data.getUsername());
 				
 				return;
 			}
@@ -63,28 +65,29 @@ public class TeamManagerServlet extends HttpServlet {
 		}
 		if(action.equals("newUser")){
 			resp.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+			User newuse = new User("danm", "dan", "mash", "dmashuda.adm@ycp.edu", BCrypt.hashpw("abc123", BCrypt.gensalt()), new LinkedList<String>(), new LinkedList<String>());
+			User new2us = new User();
 			resp.getWriter().println("Creating a new user is not implemented yet");
 		}
-		if(action.equals("cookieCheck")){
-			Cookie[] cookies = req.getCookies();
-			
-			if(cookies == null){
+		if(action.equals("sessionCheck")){
+			HttpSession session = req.getSession();
+			String username = (String) session.getAttribute("user");
+			if(username == null){
+				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Session not active, please log in");
 				return;
 			}
-			for (int i = 0; i < cookies.length; i++) {
-				  String name = cookies[i].getName();
-				  if(name.equals("TeamManUser")){
-					  String username = cookies[i].getValue();
-					  resp.getWriter().println("Welcome " + username + " You were identified by your cookies");
-					  
-				  }
-			}
+			resp.setStatus(HttpServletResponse.SC_OK);
+			resp.setContentType("text/plain");
+			resp.getWriter().println("Welcome " + username + " you were identified by session");
+			
 		}
 		
 		if(action.equals("logout")){
-			Cookie logincookie = new Cookie("TeamManUser", "nouser");
-			logincookie.setMaxAge(0);
-			resp.addCookie(logincookie);
+			HttpSession session = req.getSession();
+			session.invalidate();
+			resp.getWriter().println("Session cleared");
 		}
 	}
 }
