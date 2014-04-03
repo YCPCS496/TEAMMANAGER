@@ -15,7 +15,7 @@ public class FakeDatabase implements IDatabase {
 	
 	public FakeDatabase(){
 		users = new ArrayList<User>();
-		users.add(new User("dmashuda", "daniel", "mashuda", "dmashuda@ycp.edu", BCrypt.hashpw("abc123", BCrypt.gensalt()), new LinkedList<String>(), new LinkedList<String>()));
+		users.add(new User("dmashuda", "daniel", "mashuda", "dmashuda@ycp.edu", HashLoginData.hashData("abc123"), new LinkedList<String>(), new LinkedList<String>()));
 	}
 	
 	@Override
