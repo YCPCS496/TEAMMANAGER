@@ -17,7 +17,12 @@ public class FakeDatabase implements IDatabase {
 	
 	public FakeDatabase(){
 		users = new ArrayList<User>();
+		teams = new ArrayList<Team>();
 		users.add(new User("dmashuda", "daniel", "mashuda", "dmashuda@ycp.edu", HashLoginData.hashData("abc123"), new LinkedList<String>(), new LinkedList<String>()));
+		
+		Team testteam = new Team();
+		teams.add(testteam);
+		
 	}
 	
 	@Override
