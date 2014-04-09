@@ -6,6 +6,8 @@ package edu.ycp.TeamManager.Model;
 import java.util.GregorianCalendar;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+
+import com.google.api.server.spi.types.SimpleDate;
 /**
  * @author dan
  *
@@ -14,19 +16,19 @@ public class Event {
 	
 	
 	private GregorianCalendar date;
-	private SimpleDateFormat time;
 	private String name;
 	private String id;
 	
 	public Event(){
 		setDate(new GregorianCalendar());
-		setTime(new SimpleDateFormat());
 		setName(" ");
 		setId(" ");
 	}
 	
-	public Event(int day, int month, int year, int hour, int min){
-		
+	public Event(String name, int day, int month, int year, int hour, int min){
+		date = new GregorianCalendar(year, month, day, hour, min);
+		this.name = name;
+		setId(System.currentTimeMillis() + "");
 		
 	}
 
@@ -71,20 +73,5 @@ public class Event {
 	public void setDate(GregorianCalendar date) {
 		this.date = date;
 	}
-
-	/**
-	 * @return the time
-	 */
-	public SimpleDateFormat getTime() {
-		return time;
-	}
-
-	/**
-	 * @param time the time to set
-	 */
-	public void setTime(SimpleDateFormat time) {
-		this.time = time;
-	}
-	
 
 }
