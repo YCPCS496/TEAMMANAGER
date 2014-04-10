@@ -12,9 +12,16 @@ import java.util.TreeMap;
  */
 public class Lineup {
 	private Map<String, String> playersWithPosition;
+	private String linupId;
 	
 	public Lineup(){
 		setPlayersWithPosition(new TreeMap<String, String>());
+		linupId =  new String(System.currentTimeMillis() + "");
+	}
+	
+	public Lineup(String id) {
+		setPlayersWithPosition(new TreeMap<String, String>());
+		linupId =  id;
 	}
 
 	/**

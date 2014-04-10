@@ -135,7 +135,6 @@ public class TeamManagerServlet extends HttpServlet {
 			
 			return;
 
-			//resp.getWriter().println("Creating a new user is not implemented yet");
 		}
 		
 		//checkes the session
