@@ -36,11 +36,6 @@ public class TeamManagerServlet extends HttpServlet {
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Welcome " + username + " you were identified by session");
 		
-		/*
-		resp.setStatus(HttpServletResponse.SC_OK);
-		resp.setContentType("text/plain");
-		resp.getWriter().println("Hello, world");
-		*/
 	}
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
@@ -57,6 +52,12 @@ public class TeamManagerServlet extends HttpServlet {
 		if(action.equals("login")){
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
+			if(username == null || password == null){
+				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Invalid login");
+				return;
+			}
 			
 			
 			//sanitizes input
