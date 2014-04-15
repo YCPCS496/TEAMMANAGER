@@ -3,9 +3,11 @@ package edu.ycp.TeamManager.persist;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import edu.ycp.TeamManager.Model.Announcement;
 import edu.ycp.TeamManager.Model.LoginData;
 import edu.ycp.TeamManager.Model.Team;
 import edu.ycp.TeamManager.Model.User;
+import edu.ycp.TeamManager.Model.Workout;
 import edu.ycp.cs496.util.BCrypt;
 import edu.ycp.cs496.util.HashLoginData;
 
@@ -14,6 +16,9 @@ public class FakeDatabase implements IDatabase {
 	
 	ArrayList<User> users;
 	ArrayList<Team> teams;
+	ArrayList<Workout> workouts;
+	ArrayList<Announcement> announcements;
+	
 	
 	public FakeDatabase(){
 		users = new ArrayList<User>();
@@ -55,14 +60,24 @@ public class FakeDatabase implements IDatabase {
 	}
 
 	@Override
-	public void makeTeam(Team team) {
-		// TODO Auto-generated method stub
+	public Boolean makeTeam(Team team) {
 		
+		for(Team t: teams){
+			if(t.getId().equals(team.getId())){
+				return false;
+			}
+		}
+		
+		return teams.add(team);		
 	}
 
 	@Override
 	public void requestJoinTeam(String userId, String teamId) {
-		// TODO Auto-generated method stub
+		for(Team t: teams){
+			if(t.getId().equals(teamId)){
+				t.getUsernameRequests().add(userId);
+			}
+		}
 		
 	}
 
@@ -88,6 +103,18 @@ public class FakeDatabase implements IDatabase {
 	public boolean isTeamAdmin(String teamId, String userId) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public ArrayList<String> getUserIds(String teamId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsernameById(String userId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

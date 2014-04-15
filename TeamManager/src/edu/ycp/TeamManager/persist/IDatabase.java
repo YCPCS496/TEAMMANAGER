@@ -27,7 +27,7 @@ public interface IDatabase {
 	 * 
 	 * @param team
 	 */
-	public void makeTeam(Team team);
+	public Boolean makeTeam(Team team);
 	
 	/**
 	 * 
@@ -67,6 +67,25 @@ public interface IDatabase {
 	 * @return
 	 */
 	public boolean isTeamAdmin(String teamId, String userId);
+	
+	/**
+	 * Returns the list of all of the userids for 
+	 * <br />
+	 * the teamId that is passed
+	 * 
+	 * @param teamId
+	 * @return
+	 */
+	public ArrayList<String> getUserIds(String teamId);
+	
+	/**
+	 * Returns the username of the users that the userId matches
+	 * 
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public String getUsernameById(String userId);
 	
 	
 }

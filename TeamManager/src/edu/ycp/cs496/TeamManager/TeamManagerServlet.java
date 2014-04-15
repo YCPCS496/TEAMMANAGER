@@ -91,7 +91,6 @@ public class TeamManagerServlet extends HttpServlet {
 		}
 		// makes a new user
 		if(action.equals("newUser")){
-			resp.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
 			if(req.getParameter("password1").equals(req.getParameter("password2"))){
 				
 				// gets info for new account

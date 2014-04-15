@@ -16,19 +16,23 @@ public class Attendance {
 	private ArrayList<String> usersNotAttending;
 	private Map<String, String> playerFeedback;
 	private Map<String, String> managerFeedback;
+	private String id;
 	
 	public Attendance(){
 		setUsersAttending(new ArrayList<String>());
 		setUsersNotAttending(new ArrayList<String>());
 		setPlayerFeedback(new TreeMap<String, String>());
 		setManagerFeedback(new TreeMap<String, String>());
+		id = " ";
 	}
 	
-	public Attendance(ArrayList<String> users){
+	public Attendance(ArrayList<String> users, String id){
 		setUsersAttending(new ArrayList<String>());
 		usersAttending = users;
 		setPlayerFeedback(new TreeMap<String, String>());
 		setManagerFeedback(new TreeMap<String, String>());
+		this.id = id;
+		
 	}
 
 	/**
@@ -85,6 +89,20 @@ public class Attendance {
 	 */
 	public void setManagerFeedback(Map<String, String> managerFeedback) {
 		this.managerFeedback = managerFeedback;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 
