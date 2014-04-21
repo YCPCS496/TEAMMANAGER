@@ -90,6 +90,11 @@ public class FakeDatabase implements IDatabase {
 				if(t.getUseridRequests().contains(userId)){
 					t.getUseridRequests().remove(userId);
 					t.getUserids().add(userId);
+					for(User u: users){
+						if(u.getUsername().equals(userId)){
+							u.addTeamBelong(teamId);
+						}
+					}
 					return true;
 				}
 			}
