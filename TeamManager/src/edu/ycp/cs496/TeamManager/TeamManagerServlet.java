@@ -10,7 +10,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import edu.ycp.TeamManager.Model.LoginData;
+import edu.ycp.TeamManager.Model.Team;
 import edu.ycp.TeamManager.Model.User;
+import edu.ycp.TeamManager.control.AddTeam;
 import edu.ycp.TeamManager.control.AddUser;
 import edu.ycp.TeamManager.control.VerifyLogin;
 import edu.ycp.cs496.util.HashLoginData;
@@ -154,6 +156,41 @@ public class TeamManagerServlet extends HttpServlet {
 			resp.setStatus(HttpServletResponse.SC_OK);
 			resp.setContentType("text/plain");
 			resp.getWriter().println("Welcome " + username + " you were identified by session");
+			
+		}
+		if(action.equals("newTeam")){
+			
+			HttpSession session = req.getSession();
+			String username = (String) session.getAttribute("user");
+			
+			// if user does not have active session, then deny access
+			if(username == null){
+				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Session not active, please log in");
+				return;
+			}
+			
+			String teamName = req.getParameter("TeamName");
+			teamName = Jsoup.clean(teamName, Whitelist.basic());
+
+			
+			Team team = new Team(username, teamName, ""+System.currentTimeMillis());
+			
+			AddTeam controller = new AddTeam();
+			Boolean check = controller.addTeam(team);
+			
+			if(check){
+				resp.setStatus(HttpServletResponse.SC_OK);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Team " + teamName + " created: " + team.getId());
+			}
+			else{
+				resp.setStatus(HttpServletResponse.SC_CONFLICT);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Error Creating team");
+
+			}
 			
 		}
 		

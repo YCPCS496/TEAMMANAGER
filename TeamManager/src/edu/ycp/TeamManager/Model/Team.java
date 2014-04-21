@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public class Team {
 	
-	private ArrayList<String> usernames;
-	private ArrayList<String> usernameRequests;
+	private ArrayList<String> userids;
+	private ArrayList<String> useridRequests;
 	private ArrayList<String> owners;
 	private ArrayList<String> announcmentids;
 	private ArrayList<String> eventids;
@@ -22,8 +22,8 @@ public class Team {
 	
 	
 	public Team(){
-		usernames = new ArrayList<String>();
-		usernameRequests = new ArrayList<String>();
+		userids = new ArrayList<String>();
+		useridRequests = new ArrayList<String>();
 		owners = new ArrayList<String>();
 		announcmentids = new ArrayList<String>();
 		eventids = new ArrayList<String>();
@@ -34,8 +34,8 @@ public class Team {
 	}
 	
 	public Team(String ownerid, String teamName, String teamId){
-		usernames = new ArrayList<String>();
-		usernameRequests = new ArrayList<String>();
+		userids = new ArrayList<String>();
+		useridRequests = new ArrayList<String>();
 		owners = new ArrayList<String>();
 		announcmentids = new ArrayList<String>();
 		eventids = new ArrayList<String>();
@@ -43,7 +43,7 @@ public class Team {
 		id = teamId;
 		this.teamName = teamName;
 		
-		usernames.add(ownerid);
+		userids.add(ownerid);
 		owners.add(ownerid);
 	}
 	
@@ -122,26 +122,26 @@ public class Team {
 	/**
 	 * @return the usernameRequests
 	 */
-	public ArrayList<String> getUsernameRequests() {
-		return usernameRequests;
+	public ArrayList<String> getUseridRequests() {
+		return useridRequests;
 	}
 	/**
 	 * @param usernameRequests the usernameRequests to set
 	 */
-	public void setUsernameRequests(ArrayList<String> usernameRequests) {
-		this.usernameRequests = usernameRequests;
+	public void setUseridRequests(ArrayList<String> usernameRequests) {
+		this.useridRequests = usernameRequests;
 	}
 	/**
 	 * @return the usernames
 	 */
-	public ArrayList<String> getUsernames() {
-		return usernames;
+	public ArrayList<String> getUserids() {
+		return userids;
 	}
 	/**
 	 * @param usernames the usernames to set
 	 */
-	public void setUsernames(ArrayList<String> usernames) {
-		this.usernames = usernames;
+	public void setUserids(ArrayList<String> usernames) {
+		this.userids = usernames;
 	}
 
 }

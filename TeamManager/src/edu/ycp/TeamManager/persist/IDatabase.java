@@ -33,8 +33,9 @@ public interface IDatabase {
 	 * 
 	 * @param userId
 	 * @param teamId
+	 * @return 
 	 */
-	public void requestJoinTeam(String userId, String teamId);
+	public boolean requestJoinTeam(String userId, String teamId);
 	
 	/**
 	 * 
