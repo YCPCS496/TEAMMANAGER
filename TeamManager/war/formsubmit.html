@@ -1,13 +1,12 @@
 <html>
-<form action="/teammanager?action=login" method="post">
-Login:
-<br />
-  username<input type="text" name="username" value="mydata" /><br />
-  password<input type="text" name="password" value="mydata" /><br />
+<form action="http://localhost:8080/teammanager" method="post">
+  <input type="text" name="username" value="mydata" />
+  <input type="text" name="password" value="mydata" />
+  <input type="text" name="action" value="mydata" />
   <input type="submit" />
 </form>
 <br />
-<form action="/teammanager?action=newUser" method="post">
+<form action="http://localhost:8080/teammanager?action=newUser" method="post">
 NEW USER:
 <br />
   username <input type="text" name="username" value="mydata" /> <br />
@@ -18,17 +17,10 @@ NEW USER:
   email <input type="text" name="email" value="mydata" /> <br />
   <input type="submit" />
 </form>
-
-<form action="/teammanager?action=sessionCheck" method="post">
-	<br />
-	check session
-	<input type="submit" />
-</form>
-
-<form action="/teammanager?action=logout" method="post">
-	<br />
-	logout
-	<input type="submit" />
+<br />
+<form action="http://localhost:8080/teammanager?action=newTeam" method="post">
+  <input type="text" name="TeamName" value="mydata" />
+  <input type="submit" />
 </form>
 
 </html>
