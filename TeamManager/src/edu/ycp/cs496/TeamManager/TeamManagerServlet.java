@@ -9,6 +9,8 @@ import javax.servlet.http.*;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.ycp.TeamManager.Model.LoginData;
 import edu.ycp.TeamManager.Model.Team;
 import edu.ycp.TeamManager.Model.User;
@@ -253,7 +255,10 @@ public class TeamManagerServlet extends HttpServlet {
 				resp.setContentType("text/plain");
 				resp.getWriter().println("Confirm player failure");
 			}
-			
+			/*
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(resp.getWriter(), new User());
+			*/
 		}
 		
 		

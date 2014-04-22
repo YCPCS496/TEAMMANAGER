@@ -18,8 +18,21 @@ NEW USER:
   <input type="submit" />
 </form>
 <br />
+CREATE TEAM:
 <form action="http://localhost:8080/teammanager?action=newTeam" method="post">
   <input type="text" name="TeamName" value="mydata" />
+  <input type="submit" />
+</form>
+Request Join:
+<form action="http://localhost:8080/teammanager?action=requestJoin" method="post">
+  <input type="text" name="TeamID" value="mydata" />
+  <input type="submit" />
+</form>
+
+Confirm Join:
+<form action="http://localhost:8080/teammanager?action=confirmJoin" method="post">
+  <input type="text" name="TeamID" value="mydata" />
+  <input type="text" name="UserConfirm" value="mydata" />
   <input type="submit" />
 </form>
 

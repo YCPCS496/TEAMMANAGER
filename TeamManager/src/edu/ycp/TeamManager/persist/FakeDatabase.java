@@ -161,6 +161,26 @@ public class FakeDatabase implements IDatabase {
 		return null;
 	}
 
+	@Override
+	public User getUserById(String userId) {
+		for(User u: users){
+			if(u.getUsername().equals(userId)){
+				return u;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Team getTeamById(String teamId) {
+		for(Team t: teams){
+			if(t.getId().equals(teamId)){
+				return t;
+			}
+		}
+		return null;
+	}
+
 }
 	
 
