@@ -88,5 +88,20 @@ public interface IDatabase {
 	 */
 	public String getUsernameById(String userId);
 	
+	/**
+	 * 
+	 * @param userId
+	 * @return {@link User}
+	 */
+	public User getUserById(String userId);
+	
+	/**
+	 * 
+	 * 
+	 * @param teamId
+	 * @return {@link Team}
+	 */
+	public Team getTeamById(String teamId);
+	
 	
 }

@@ -90,6 +90,11 @@ public class FakeDatabase implements IDatabase {
 				if(t.getUseridRequests().contains(userId)){
 					t.getUseridRequests().remove(userId);
 					t.getUserids().add(userId);
+					for(User u: users){
+						if(u.getUsername().equals(userId)){
+							u.addTeamBelong(teamId);
+						}
+					}
 					return true;
 				}
 			}
@@ -151,6 +156,26 @@ public class FakeDatabase implements IDatabase {
 		for(User u: users){
 			if(u.getUsername().equals(userId)){
 				return u.getFirstname() + " " + u.getLastname();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public User getUserById(String userId) {
+		for(User u: users){
+			if(u.getUsername().equals(userId)){
+				return u;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Team getTeamById(String teamId) {
+		for(Team t: teams){
+			if(t.getId().equals(teamId)){
+				return t;
 			}
 		}
 		return null;

@@ -3,6 +3,7 @@
  */
 package edu.ycp.TeamManager.Model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -17,8 +18,8 @@ public class User {
 	private String lastname;
 	private String email;
 	private String sessionHash;
-	private LinkedList<String> teamsBelonging;
-	private LinkedList<String> teamsOwned;
+	private ArrayList<String> teamsBelonging;
+	private ArrayList<String> teamsOwned;
 	
 	/**
 	 * 
@@ -35,6 +36,8 @@ public class User {
 		this.firstname = first;
 		this.lastname = last;
 		this.email = email;
+		teamsBelonging = new ArrayList<String>();
+		teamsOwned = new ArrayList<String>();
 		for(String team: belonged){
 			this.teamsBelonging.add(team);
 		}
@@ -53,8 +56,8 @@ public class User {
 		firstname = new String(" ");
 		lastname = new String(" ");
 		email = new String(" ");
-		teamsBelonging = new LinkedList<String>();
-		teamsOwned = new LinkedList<String>();
+		teamsBelonging = new ArrayList<String>();
+		teamsOwned = new ArrayList<String>();
 	}
 	/**
 	 * 

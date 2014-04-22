@@ -9,11 +9,15 @@ import javax.servlet.http.*;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.ycp.TeamManager.Model.LoginData;
 import edu.ycp.TeamManager.Model.Team;
 import edu.ycp.TeamManager.Model.User;
 import edu.ycp.TeamManager.control.AddTeam;
 import edu.ycp.TeamManager.control.AddUser;
+import edu.ycp.TeamManager.control.ConfimJoin;
+import edu.ycp.TeamManager.control.RequestJoin;
 import edu.ycp.TeamManager.control.VerifyLogin;
 import edu.ycp.cs496.util.HashLoginData;
 
@@ -193,6 +197,70 @@ public class TeamManagerServlet extends HttpServlet {
 			}
 			
 		}
+		if(action.equals("requestJoin")){
+			
+			HttpSession session = req.getSession();
+			String username = (String) session.getAttribute("user");
+			
+			// if user does not have active session, then deny access
+			if(username == null){
+				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Session not active, please log in");
+				return;
+			}
+			String teamId = req.getParameter("TeamID");
+			teamId = Jsoup.clean(teamId, Whitelist.basic());
+			
+			RequestJoin control = new RequestJoin();
+			boolean check = control.requestJoin(username, teamId);
+			if(check){
+				resp.setStatus(HttpServletResponse.SC_OK);
+				resp.setContentType("text/plain");
+				resp.getWriter().println(username + " requested to join team with Id:" + teamId);
+			}
+			else{
+				resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("No team with Id: "+ teamId + " found");
+			}
+			return;
+		}
+		if(action.equals("confirmJoin")){
+			HttpSession session = req.getSession();
+			String username = (String) session.getAttribute("user");
+			
+			// if user does not have active session, then deny access
+			if(username == null){
+				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Session not active, please log in");
+				return;
+			}
+			String teamId = req.getParameter("TeamID");
+			teamId = Jsoup.clean(teamId, Whitelist.basic());
+			
+			String confiruser = req.getParameter("UserConfirm");
+			confiruser = Jsoup.clean(confiruser, Whitelist.basic());
+			
+			ConfimJoin control = new ConfimJoin();
+			boolean check = control.confirmJoin(username, teamId, confiruser);
+			
+			if(check){
+				resp.setStatus(HttpServletResponse.SC_OK);
+				resp.setContentType("text/plain");
+				resp.getWriter().println(username + " is now a part of " + teamId);
+			}else{
+				resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Confirm player failure");
+			}
+			/*
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(resp.getWriter(), new User());
+			*/
+		}
+		
 		
 		//logs user out
 		if(action.equals("logout")){
