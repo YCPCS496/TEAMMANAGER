@@ -52,8 +52,52 @@ var t = " tries";
 		}
 }
 
-function tester(){
-	//window.alert("test click");
-	$("body").empty(); // clear all existing elements from document
-	$("body").append("<p>Hey, this is the new user interface!</p>");
+function createTeam(){
+	var usernameVal = $("#username").val();
+	
+	var password1Val = $("#password1").val();
+	var password2Val = $("#password2").val();
+	
+	// TODO: ensure passwords match
+
+	//creates a team
+	var param = "http://localhost:8080/teammanager?action=newTeam&TeamName="+;
+	$.ajax({
+	  type: "POST",
+	  url: param,
+	  data: {
+		username: usernameVal,
+		password1: password1Val,
+		// etc.
+	  },
+	  success: function(data, textStatus, jqXHR) {
+		// do something to let the user know what happened
+		console.log("textStatus is " + textStatus);
+	  },
+	  dataType: 'text'
+	});
+
 }
+
+function requestJoin(){
+	//Sends a request to join a team
+}
+
+function confirmJoin(){
+	//Confirms a join to a team
+}
+
+function getTeam(){
+	//Get team
+	//get methods
+}
+
+function getUser(){
+	//Get User
+	//get methods
+	
+}
+
+
+
+
