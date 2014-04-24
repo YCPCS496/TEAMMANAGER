@@ -2,57 +2,51 @@ var count = 3;
 
 //simple function to validate information
 function validate(objForm) {
-var emailAddr = document.getElementById('username').value;
-var pw = document.getElementById('pword').value;
-
-var valid = false;
-var emailAddrArray = ["test"];  // as many as you like - no comma after final entry
-var pwArray = ["test"];  // the corresponding passwords;
-// servlet calls and such
-
-	for (var i=0; i < emailAddrArray.length; i++) {
-		if ((emailAddr == emailAddrArray[i]) && (pw == pwArray[i])) {
-		valid = true;
-		break;
-	}
-}
-	//if input was valid 
+var usernameVal = $("#username").val();
 	
-	if(objForm..value.length==0){
-			alert("Please enter Username");
-			objForm.username.focus();
-			return false;
+var password1Val = $("#pword1").val();
+var password2Val = $("#pword2").val();
+
+var firstNameVal = $("#firstName").val();
+var lastNameVal = $("#lastName").val();
+var emailVal = $("#email1").val();
+	
+	if(usernameVal == ""){
+		alert("Please provide a username");
 	}
 	
-	if(objForm.pword.value.length==0){
-			alert("Please enter Username");
-			objForm.pword.focus();
-			return false;
-		}
+	//checking to make sure both passwords are correct
+	if(password1Val != password2Val){
+		alert("Passoword does not match");
+	}
+	
+	//checking the value of email
+	alert(emailVal);
+	
+	if(password1Val == password2Val){
+		$.ajax({
+		  type: "POST",
+		  url: "http://localhost:8080/teammanager?action=newUser",
+		  data: {
+			username: usernameVal,
+			password1: password1Val,
+			firstName: firstNameVal,
+			lastName: lastNameVal,
+			email1: emailVal
+		  },
+		  success: function(data, textStatus, jqXHR) {
+			// do something to let the user know what happened
+			console.log("textStatus is " + textStatus);
+		  },
+		  dataType: 'text'
+	});
 		
-	if (valid) {
-		alert ("Login was successful");
-		window.location = "http://www.ycp.edu";
-		$("body").empty(); // clear all existing elements from document
-	
-		return false;
 	}
-
-var t = " tries";
-	if (count == 1) {t = " try"}
-		if (count >= 1) {
-			alert ("Invalid email and/or password.  You have " + count + t + " left.");
-			document.email = "";
-			document.pword = "";
-			count --;
-		}
-		
-		if(count <= 0){
-			window.location = "http://www.ycp.edu";
-		}
+	
+	
 }
 
-function createTeam(){
+/*function createTeam(){
 	var usernameVal = $("#username").val();
 	
 	var password1Val = $("#password1").val();
@@ -97,7 +91,6 @@ function getUser(){
 	//get methods
 	
 }
-
-
+*/
 
 
