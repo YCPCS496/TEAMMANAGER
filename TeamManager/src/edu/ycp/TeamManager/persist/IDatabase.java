@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.ycp.TeamManager.Model.LoginData;
 import edu.ycp.TeamManager.Model.Team;
 import edu.ycp.TeamManager.Model.User;
+import edu.ycp.TeamManager.Model.Workout;
 
 public interface IDatabase {
 	/**
@@ -102,6 +103,20 @@ public interface IDatabase {
 	 * @return {@link Team}
 	 */
 	public Team getTeamById(String teamId);
+	
+	/**
+	 * 
+	 * @param work
+	 * @return
+	 */
+	public boolean addWorkout(Workout work);
+	
+	/**
+	 * 
+	 * @param workoutId
+	 * @return
+	 */
+	public Workout getWorkout(String workoutId); 
 	
 	
 }

@@ -181,6 +181,18 @@ public class FakeDatabase implements IDatabase {
 		return null;
 	}
 
+	@Override
+	public boolean addWorkout(Workout work) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Workout getWorkout(String workoutId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
 	
 

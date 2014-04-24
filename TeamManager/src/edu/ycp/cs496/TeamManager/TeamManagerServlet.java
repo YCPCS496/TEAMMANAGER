@@ -58,6 +58,11 @@ public class TeamManagerServlet extends HttpServlet {
 			GetUserById control = new GetUserById();
 			User retuser = control.getUserById(targetuser);
 			
+			if(retuser != null){
+				retuser.setPasswordHash(" ");
+			}
+			
+			
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.writeValue(resp.getWriter(), retuser);
@@ -158,7 +163,6 @@ public class TeamManagerServlet extends HttpServlet {
 				String lastname = req.getParameter("lastname");
 				String email = req.getParameter("email");
 				
-				System.out.println(email);
 				
 				if(username == null || password == null || firstname == null || lastname == null || email == null){
 					resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
