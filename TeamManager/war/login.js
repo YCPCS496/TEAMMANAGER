@@ -26,7 +26,7 @@ var emailVal = $("#email1").val();
 	if(password1Val == password2Val){
 		$.ajax({
 		  type: "POST",
-		  url: "http://localhost:8080/teammanager?action=newUser",
+		  url: "http://localhost:8888/teammanager?action=newUser",
 		  data: {
 			username: usernameVal,
 			password1: password1Val,
@@ -43,32 +43,27 @@ var emailVal = $("#email1").val();
 		  dataType: 'text'
 	});
 		
+		alert("It worked!")
 	}
 	
 	
 }
 
-/*function createTeam(){
-	var usernameVal = $("#username").val();
-	
-	var password1Val = $("#password1").val();
-	var password2Val = $("#password2").val();
-	
-	// TODO: ensure passwords match
+function createTeam(){
+	var teamNameVal = $("#teamName").val();
 
 	//creates a team
-	var param = "http://localhost:8080/teammanager?action=newTeam&TeamName="+;
+	var param = "http://localhost:8888/teammanager?action=newTeam";
 	$.ajax({
 	  type: "POST",
 	  url: param,
 	  data: {
-		username: usernameVal,
-		password1: password1Val,
-		// etc.
+		teamName: teamNameVal
 	  },
 	  success: function(data, textStatus, jqXHR) {
 		// do something to let the user know what happened
-		console.log("textStatus is " + textStatus);
+		alert(data);
+		console.log(data);
 	  },
 	  dataType: 'text'
 	});
@@ -77,11 +72,58 @@ var emailVal = $("#email1").val();
 
 function requestJoin(){
 	//Sends a request to join a team
+	var teamNameVal = $("#teamName").val();
+
+	//creates a team
+	var param = "http://localhost:8888/teammanager?action=requestJoin";
+	$.ajax({
+	  type: "POST",
+	  url: param,
+	  data: {
+		teamName: teamNameVal
+	  },
+	  success: function(data, textStatus, jqXHR) {
+		// do something to let the user know what happened
+		alert(data);
+		console.log(data);
+	  },
+	  dataType: 'text'
+	});
+
 }
+}
+
 
 function confirmJoin(){
 	//Confirms a join to a team
+	var teamNameVal = $("#teamName").val();
+
+	//creates a team
+	var param = "http://localhost:8888/teammanager?action=confirmJoin";
+	$.ajax({
+	  type: "POST",
+	  url: param,
+	  data: {
+		teamName: teamNameVal
+	  },
+	  success: function(data, textStatus, jqXHR) {
+		// do something to let the user know what happened
+		alert(data);
+		console.log(data);
+	  },
+	  dataType: 'text'
+	});
+
 }
+	
+}
+
+/*
+function login(){
+	
+	
+}
+
 
 function getTeam(){
 	//Get team
