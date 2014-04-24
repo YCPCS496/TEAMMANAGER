@@ -17,6 +17,8 @@ import edu.ycp.TeamManager.Model.User;
 import edu.ycp.TeamManager.control.AddTeam;
 import edu.ycp.TeamManager.control.AddUser;
 import edu.ycp.TeamManager.control.ConfimJoin;
+import edu.ycp.TeamManager.control.GetTeamById;
+import edu.ycp.TeamManager.control.GetUserById;
 import edu.ycp.TeamManager.control.RequestJoin;
 import edu.ycp.TeamManager.control.VerifyLogin;
 import edu.ycp.cs496.util.HashLoginData;
@@ -37,10 +39,60 @@ public class TeamManagerServlet extends HttpServlet {
 			return;
 		}
 		
+		// gets action 
+		String path = req.getPathInfo();
+		path = path.substring(1);
+		int slashparam = path.indexOf('/');
+		String reqString = path.substring(0, slashparam);
+		
+		//gets target object
+		String target = path.substring(slashparam+1);
+		
+		//cleans input
+		reqString = Jsoup.clean(reqString, Whitelist.basic());
+		target = Jsoup.clean(target, Whitelist.basic());
+		
+		if(reqString.equals("users")){
+			String targetuser = target;
+			//TODO: Add security
+			GetUserById control = new GetUserById();
+			User retuser = control.getUserById(targetuser);
+			
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(resp.getWriter(), retuser);
+			resp.setContentType("application/json");
+			resp.setStatus(HttpServletResponse.SC_OK);
+			return;
+		}
+		if(reqString.equals("teams")){
+			String targetteam = target;
+			//TODO: Add security
+			
+			GetTeamById control = new GetTeamById();
+			Team retTeam =  control.getTeamById(targetteam);
+			
+			// if the user is not part of the team, then clear
+			//the team data except owners names and team name
+			if(!retTeam.getUserids().contains(username)){
+				retTeam.getEventids().clear();
+				retTeam.getUserids().clear();
+				retTeam.getAnnouncmentids().clear();
+				retTeam.getEventids().clear();
+				retTeam.getWorkoutids().clear();
+			}
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(resp.getWriter(), retTeam);
+			resp.setContentType("application/json");
+			resp.setStatus(HttpServletResponse.SC_OK);
+			return;
+			
+		}
 		//if a username exists, then return welcome message
 		resp.setStatus(HttpServletResponse.SC_OK);
 		resp.setContentType("text/plain");
-		resp.getWriter().println("Welcome " + username + " you were identified by session");
+		resp.getWriter().println("Welcome " + username + " you were identified by session: " + target);
 		
 	}
 	
@@ -106,7 +158,15 @@ public class TeamManagerServlet extends HttpServlet {
 				String lastname = req.getParameter("lastname");
 				String email = req.getParameter("email");
 				
+				System.out.println(email);
 				
+				if(username == null || password == null || firstname == null || lastname == null || email == null){
+					resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("Incomplete request");
+					return;
+				}
+			
 				// sanitizes input
 				username = Jsoup.clean(username, Whitelist.basic());
 				password = Jsoup.clean(password, Whitelist.basic());
@@ -249,7 +309,7 @@ public class TeamManagerServlet extends HttpServlet {
 			if(check){
 				resp.setStatus(HttpServletResponse.SC_OK);
 				resp.setContentType("text/plain");
-				resp.getWriter().println(username + " is now a part of " + teamId);
+				resp.getWriter().println(confiruser + " is now a part of " + teamId);
 			}else{
 				resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				resp.setContentType("text/plain");
@@ -260,6 +320,7 @@ public class TeamManagerServlet extends HttpServlet {
 			mapper.writeValue(resp.getWriter(), new User());
 			*/
 		}
+		
 		
 		
 		//logs user out

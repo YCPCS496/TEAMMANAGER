@@ -31,9 +31,9 @@ var emailVal = $("#email1").val();
 			username: usernameVal,
 			password1: password1Val,
 			password2: password2Val,
-			firstName: firstNameVal,
-			lastName: lastNameVal,
-			email1: emailVal
+			firstname: firstNameVal,
+			lastname: lastNameVal,
+			email: emailVal
 		  },
 		  success: function(data, textStatus, jqXHR) {
 			// do something to let the user know what happened
