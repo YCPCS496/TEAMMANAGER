@@ -50,7 +50,7 @@ var emailVal = $("#email1").val();
 }
 
 function createTeam(){
-	var teamNameVal = $("#teamName").val();
+	var teamNameVal = $("#TeamName").val();
 
 	//creates a team
 	var param = "http://localhost:8888/teammanager?action=newTeam";
