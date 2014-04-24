@@ -21,7 +21,7 @@ var emailVal = $("#email1").val();
 	}
 	
 	//checking the value of email
-	alert(emailVal);
+	//alert(emailVal);
 	
 	if(password1Val == password2Val){
 		$.ajax({
@@ -37,7 +37,8 @@ var emailVal = $("#email1").val();
 		  },
 		  success: function(data, textStatus, jqXHR) {
 			// do something to let the user know what happened
-			console.log("textStatus is " + textStatus);
+			alert(data);
+			console.log(data);
 		  },
 		  dataType: 'text'
 	});
