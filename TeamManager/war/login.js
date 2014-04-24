@@ -80,7 +80,7 @@ function requestJoin(){
 	  type: "POST",
 	  url: param,
 	  data: {
-		teamName: teamNameVal
+		TeamID: teamNameVal
 	  },
 	  success: function(data, textStatus, jqXHR) {
 		// do something to let the user know what happened
@@ -91,7 +91,7 @@ function requestJoin(){
 	});
 
 }
-}
+
 
 
 function confirmJoin(){
@@ -104,7 +104,8 @@ function confirmJoin(){
 	  type: "POST",
 	  url: param,
 	  data: {
-		teamName: teamNameVal
+		TeamID: teamNameVal
+		UserConfirm:
 	  },
 	  success: function(data, textStatus, jqXHR) {
 		// do something to let the user know what happened
@@ -118,13 +119,36 @@ function confirmJoin(){
 	
 }
 
-/*
+
 function login(){
 	
+	var usernameVal = $("#username").val();
+	var password1Val = $("#pword1").val()
+
+	 $.ajax({
+            type: "POST",
+            url: 'admin/login.php',
+            data: {
+                username: usernameVal
+                password: password1Val
+            },
+            success: function(data)
+            {
+                if (data === 'Correct') {
+                    window.location.replace('admin/admin.php');
+                }
+                else {
+                    alert(data);
+                }
+            }
+        });
+
+    });
+
+});
 	
-}
 
-
+/*
 function getTeam(){
 	//Get team
 	//get methods
