@@ -122,6 +122,9 @@ public class TeamManagerServlet extends HttpServlet {
 			username = Jsoup.clean(username, Whitelist.basic());
 			password = Jsoup.clean(password, Whitelist.basic());
 			
+			System.out.println("|"+username+"|");
+
+			System.out.println("|"+password+"|");
 			
 			LoginData data = new LoginData(username, password);
 			
@@ -158,7 +161,7 @@ public class TeamManagerServlet extends HttpServlet {
 				String lastname = req.getParameter("lastname");
 				String email = req.getParameter("email");
 				
-				System.out.println(email);
+				
 				
 				if(username == null || password == null || firstname == null || lastname == null || email == null){
 					resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);

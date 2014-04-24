@@ -58,7 +58,7 @@ function createTeam(){
 	  type: "POST",
 	  url: param,
 	  data: {
-		teamName: teamNameVal
+		  TeamName: teamNameVal
 	  },
 	  success: function(data, textStatus, jqXHR) {
 		// do something to let the user know what happened
@@ -92,8 +92,7 @@ function requestJoin(){
 
 }
 
-
-
+/*
 function confirmJoin(){
 	//Confirms a join to a team
 	var teamNameVal = $("#teamName").val();
@@ -105,7 +104,7 @@ function confirmJoin(){
 	  url: param,
 	  data: {
 		TeamID: teamNameVal
-		UserConfirm:
+		UserConfirm:teamNameVal
 	  },
 	  success: function(data, textStatus, jqXHR) {
 		// do something to let the user know what happened
@@ -116,38 +115,31 @@ function confirmJoin(){
 	});
 
 }
-	
-}
+*/
 
 
 function login(){
 	
-	var usernameVal = $("#username").val();
-	var password1Val = $("#pword1").val()
+	var usernameVal = $("#username1").val();
+	var password1Val = $("#pword").val();
 
-	 $.ajax({
-            type: "POST",
-            url: 'admin/login.php',
-            data: {
-                username: usernameVal
-                password: password1Val
-            },
-            success: function(data)
-            {
-                if (data === 'Correct') {
-                    window.location.replace('admin/admin.php');
-                }
-                else {
-                    alert(data);
-                }
-            }
-        });
+	var parm = "http://localhost:8888/teammanager?action=login";
+	$.ajax({
+		  type: "POST",
+		  url: parm,
+		  data: {
+			username: usernameVal,
+			password: password1Val
+		  },
+		  success: function(data, textStatus, jqXHR) {
+			// do something to let the user know what happened
+			alert(data);
+			console.log(data);
+		  },
+		  dataType: 'text'
+		});
 
-    });
-
-});
-	
-
+}
 /*
 function getTeam(){
 	//Get team
