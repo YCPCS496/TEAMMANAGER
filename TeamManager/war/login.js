@@ -11,7 +11,7 @@ var firstNameVal = $("#firstName").val();
 var lastNameVal = $("#lastName").val();
 var emailVal = $("#email1").val();
 	
-	if(usernameVal == ""){
+	if((usernameVal||password1Val) == ""){
 		alert("Please provide a username");
 		event.preventDefault();
 	}
@@ -44,7 +44,7 @@ var emailVal = $("#email1").val();
 		  dataType: 'text'
 	});
 		
-		alert("It worked!")
+		alert("Validate Worked")
 	}
 	
 	
@@ -120,10 +120,14 @@ function confirmJoin(){
 
 
 function login(){
-	
+	//checks the database to see if the user is there and logs the user in 
 	var usernameVal = $("#username1").val();
 	var password1Val = $("#pword").val();
 
+	if ((usernameVal|| password1Val)== ""){
+		event.preventDefault();
+		alert("Login test");
+	}
 	var parm = "http://localhost:8888/teammanager?action=login";
 	$.ajax({
 		  type: "POST",
@@ -139,7 +143,6 @@ function login(){
 		  },
 		  dataType: 'text'
 		});
-
 }
 /*
 function getTeam(){
@@ -153,15 +156,27 @@ function getUser(){
 	
 }
 */
-function loginTest(){
+
+function createTeamView(){
+	$('body').html(
+			'<p>Team Name<input type="text" id="TeamName"></p>'+
+			'<button onclick="createTeam()">Create Team</button>'
+			);
+}
+function loginView(){
+	//changes view to login screen 
 	$('body').html(
 				'<p>Login with username <input type="text" id="username1"></p>'+
 				'<p>Password<input type="password" id="pword"></p>'+
-				'<button onclick="validate()">Login</button>'
+				'<button onclick="login()">Login</button>'+
+				'<button onclick="createTeamView()">Create Team</button>'
+				
 				);
+	
 }
 
 function clearScreen(){
+	//changes view to create a user and exposes login button 
 	$('body').html(
 		      '<p>Enter Username<input type="text" id="username"></p>'+
 		      '<p>Enter Password<input type="password" id="pword1"></p>'+
@@ -169,8 +184,8 @@ function clearScreen(){
 			  '<p>First Name<input type="text" id="firstName"></p>'+
 			  '<p>Last Name<input type="text" id="lastName"></p>'+
 			  '<p>Enter Email<input type="text" id="email1"></p>'+
-			  '<button onclick="validate() ">Create User</button>'+
-			  '<button onclick="loginTest() ">Login</button>'
+			  '<button onclick="validate()">Create User</button>'+
+			  '<button onclick="loginView()">Login</button>'
 			  );
 	
 	
