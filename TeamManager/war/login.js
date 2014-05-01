@@ -13,6 +13,7 @@ var emailVal = $("#email1").val();
 	
 	if(usernameVal == ""){
 		alert("Please provide a username");
+		event.preventDefault();
 	}
 	
 	//checking to make sure both passwords are correct
@@ -152,5 +153,28 @@ function getUser(){
 	
 }
 */
+function loginTest(){
+	$('body').html(
+				'<p>Login with username <input type="text" id="username1"></p>'+
+				'<p>Password<input type="password" id="pword"></p>'+
+				'<button onclick="validate()">Login</button>'
+				);
+}
+
+function clearScreen(){
+	$('body').html(
+		      '<p>Enter Username<input type="text" id="username"></p>'+
+		      '<p>Enter Password<input type="password" id="pword1"></p>'+
+			  '<p>Re-enter Password<input type="password" id="pword2"></p>'+	
+			  '<p>First Name<input type="text" id="firstName"></p>'+
+			  '<p>Last Name<input type="text" id="lastName"></p>'+
+			  '<p>Enter Email<input type="text" id="email1"></p>'+
+			  '<button onclick="validate() ">Create User</button>'+
+			  '<button onclick="loginTest() ">Login</button>'
+			  );
+	
+	
+	alert("Test");
+}
 
 
