@@ -26,7 +26,7 @@ public class Announcement {
 		usersViewed = new LinkedList<String>();
 		title = new String(" ");
 		message = new String(" ");
-		id = " ";
+		setId(" ");
 		
 	}
 	
@@ -43,7 +43,7 @@ public class Announcement {
 		this.message = message;
 		this.usersNotViewed = usersNotViewed;
 		this.usersViewed = usersViewed;
-		this.id = id;
+		this.setId(id);
 	}
 	/**
 	 * 
@@ -122,6 +122,20 @@ public class Announcement {
 	 */
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

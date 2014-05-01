@@ -93,5 +93,30 @@ function getUser(){
 	
 }
 */
+function add() {
+
+//Create an input type dynamically.
+var element = document.createElement("input");
+
+//Create Labels
+var label = document.createElement("label");
+label.innerHTML = "New Label";     
+
+//Assign different attributes to the element.
+element.setAttribute("type", "text");
+element.setAttribute("value", "");
+element.setAttribute("name", "Test Name");
+element.setAttribute("style", "width:200px");
+
+label.setAttribute("style", "font-weight:normal");
+
+// 'foobar' is the div id, where new fields are to be added
+var foo = document.getElementById("body");
+
+//Append the element in page (in span).
+alert(element);
+foo.appendChild(label);
+foo.appendChild(element);
+}
 
 
