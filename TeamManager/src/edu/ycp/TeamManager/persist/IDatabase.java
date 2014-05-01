@@ -2,6 +2,8 @@ package edu.ycp.TeamManager.persist;
 
 import java.util.ArrayList;
 
+import edu.ycp.TeamManager.Model.Announcement;
+import edu.ycp.TeamManager.Model.Event;
 import edu.ycp.TeamManager.Model.LoginData;
 import edu.ycp.TeamManager.Model.Team;
 import edu.ycp.TeamManager.Model.User;
@@ -117,6 +119,49 @@ public interface IDatabase {
 	 * @return
 	 */
 	public Workout getWorkout(String workoutId); 
+	
+	/**
+	 * 
+	 * @param ann
+	 * @return
+	 */
+	public boolean addAnnouncement(Announcement ann);
+	
+	/**
+	 * 
+	 * @param annId
+	 * @return
+	 */
+	public Announcement getAnnouncementById(String annId);
+	
+	/**
+	 * 
+	 * @param even
+	 * @return
+	 */
+	public boolean addEvent(Event even);
+	
+	/**
+	 * 
+	 * @param evid
+	 * @return
+	 */
+	public Event getEventById(String evid);
+	
+	/**
+	 * 
+	 * @param announcementid
+	 * @param playerid
+	 * @return
+	 */
+	public boolean viewAnnouncement(String announcementid, String playerid);
+	
+	/**
+	 * 
+	 * @param userid
+	 * @return
+	 */
+	public ArrayList<Announcement> getUnviewedAnnouncement(String userid);
 	
 	
 }

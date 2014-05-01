@@ -157,7 +157,7 @@ function loginTest(){
 	$('body').html(
 				'<p>Login with username <input type="text" id="username1"></p>'+
 				'<p>Password<input type="password" id="pword"></p>'+
-				'<button onclick="validate()">Login</button>'
+				'<button onclick="login()">Login</button>'
 				);
 }
 

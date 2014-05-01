@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import edu.ycp.TeamManager.Model.Announcement;
+import edu.ycp.TeamManager.Model.Event;
 import edu.ycp.TeamManager.Model.LoginData;
 import edu.ycp.TeamManager.Model.Team;
 import edu.ycp.TeamManager.Model.User;
@@ -18,11 +19,13 @@ public class FakeDatabase implements IDatabase {
 	ArrayList<Team> teams;
 	ArrayList<Workout> workouts;
 	ArrayList<Announcement> announcements;
+	ArrayList<Event> events; 
 	
 	
 	public FakeDatabase(){
 		users = new ArrayList<User>();
 		teams = new ArrayList<Team>();
+		events = new ArrayList<Event>();
 		users.add(new User("dmashuda", "daniel", "mashuda", "dmashuda@ycp.edu", HashLoginData.hashData("abc123"), new LinkedList<String>(), new LinkedList<String>()));
 		
 		Team testteam = new Team("dmashuda", "Ice Dragons", "12345");
@@ -183,14 +186,86 @@ public class FakeDatabase implements IDatabase {
 
 	@Override
 	public boolean addWorkout(Workout work) {
-		// TODO Auto-generated method stub
-		return false;
+		for(Workout w: workouts){
+			if(w.getId().equals(work.getId())){
+				return false;
+			}
+		}
+		workouts.add(work);
+		return true;
 	}
 
 	@Override
 	public Workout getWorkout(String workoutId) {
-		// TODO Auto-generated method stub
+		for(Workout w: workouts){
+			if(workoutId.equals(w.getId())){
+				return w;
+			}
+		}
 		return null;
+	}
+
+	@Override
+	public boolean addAnnouncement(Announcement ann) {
+		for(Announcement announce: announcements){
+			if(ann.getId().equals(announce.getId())){
+				return false;
+			}
+		}
+		announcements.add(ann);
+		return true;
+	}
+
+	@Override
+	public Announcement getAnnouncementById(String annId) {
+		for(Announcement ann: announcements){
+			if(ann.getId().equals(annId)){
+				return ann;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean addEvent(Event even) {
+		for(Event e: events){
+			if(e.getId().equals(even)){
+				return false;
+			}
+		}
+		events.add(even);
+		return true;
+	}
+
+	@Override
+	public Event getEventById(String evid) {
+		for(Event e: events){
+			if(e.getId().equals(evid)){
+				return e;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean viewAnnouncement(String announcementid, String playerid) {
+		for(Announcement a: announcements){
+			if(a.getId().equals(announcementid)){
+				return a.addUserViewed(playerid);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public ArrayList<Announcement> getUnviewedAnnouncement(String userid) {
+		ArrayList<Announcement> anns = new ArrayList<Announcement>();
+		for(Announcement a: announcements){
+			if(!a.userViewedMessage(userid)){
+				anns.add(a);
+			}
+		}
+		return anns;
 	}
 
 }

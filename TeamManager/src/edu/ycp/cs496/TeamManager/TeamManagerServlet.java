@@ -54,9 +54,9 @@ public class TeamManagerServlet extends HttpServlet {
 		
 		if(reqString.equals("users")){
 			String targetuser = target;
-			//TODO: Add security
 			GetUserById control = new GetUserById();
 			User retuser = control.getUserById(targetuser);
+			retuser.setPasswordHash("NULL");
 			
 			
 			ObjectMapper mapper = new ObjectMapper();
@@ -89,6 +89,12 @@ public class TeamManagerServlet extends HttpServlet {
 			return;
 			
 		}
+		if(reqString.equals("workouts")){
+			
+		}
+		if(reqString.equals("announcements")){
+			
+		}
 		//if a username exists, then return welcome message
 		resp.setStatus(HttpServletResponse.SC_OK);
 		resp.setContentType("text/plain");
@@ -110,7 +116,7 @@ public class TeamManagerServlet extends HttpServlet {
 		if(action.equals("login")){
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
-			if(username == null || password == null){
+			if(username == null || password == null || username == "" || password == ""){
 				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				resp.setContentType("text/plain");
 				resp.getWriter().println("Invalid login");
@@ -149,6 +155,12 @@ public class TeamManagerServlet extends HttpServlet {
 		}
 		// makes a new user
 		if(action.equals("newUser")){
+			if(req.getParameter("password1") == null || req.getParameter("password2") == null){
+				resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("User Creation Failed: incomplete request");
+				return;
+			}
 			if(req.getParameter("password1").equals(req.getParameter("password2"))){
 				
 				// gets info for new account
@@ -166,6 +178,20 @@ public class TeamManagerServlet extends HttpServlet {
 					resp.getWriter().println("Incomplete request");
 					return;
 				}
+				if(username == " " || password == " " || firstname == " " || lastname == " " || email == " "){
+					resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("Incomplete request");
+					return;
+				}
+				if(username == "" || password == ""|| firstname == "" || lastname == "" || email == ""){
+					resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("Incomplete request");
+					return;
+				}
+				
+				
 			
 				// sanitizes input
 				username = Jsoup.clean(username, Whitelist.basic());
@@ -236,6 +262,13 @@ public class TeamManagerServlet extends HttpServlet {
 			}
 			
 			String teamName = req.getParameter("TeamName");
+			
+			if(teamName == "" || teamName == null){
+				resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Incomplete request");
+				return;
+			}
 			teamName = Jsoup.clean(teamName, Whitelist.basic());
 
 			
@@ -270,6 +303,12 @@ public class TeamManagerServlet extends HttpServlet {
 				return;
 			}
 			String teamId = req.getParameter("TeamID");
+			if(teamId == null || teamId == ""){
+				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("you must include a team ID in your request");
+				return;
+			}
 			teamId = Jsoup.clean(teamId, Whitelist.basic());
 			
 			RequestJoin control = new RequestJoin();
@@ -303,6 +342,13 @@ public class TeamManagerServlet extends HttpServlet {
 			String confiruser = req.getParameter("UserConfirm");
 			confiruser = Jsoup.clean(confiruser, Whitelist.basic());
 			
+			if(teamId == "" || teamId == null || confiruser == null || confiruser == ""){
+				resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Incomplete request");
+				return;
+			}
+			
 			ConfimJoin control = new ConfimJoin();
 			boolean check = control.confirmJoin(username, teamId, confiruser);
 			
@@ -319,6 +365,36 @@ public class TeamManagerServlet extends HttpServlet {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.writeValue(resp.getWriter(), new User());
 			*/
+		}
+		if(action.equals("newAnnouncement")){
+
+			HttpSession session = req.getSession();
+			String username = (String) session.getAttribute("user");
+
+			// if user does not have active session, then deny access
+			if(username == null){
+				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Session not active, please log in");
+				return;
+			}
+			
+			//TODO: add a new announcement
+		}
+		if(action.equals("newWorkout")){
+
+			HttpSession session = req.getSession();
+			String username = (String) session.getAttribute("user");
+
+			// if user does not have active session, then deny access
+			if(username == null){
+				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("Session not active, please log in");
+				return;
+			}
+			
+			//TODO: add a new workout
 		}
 		
 		
