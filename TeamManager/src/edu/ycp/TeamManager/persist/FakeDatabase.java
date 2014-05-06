@@ -27,7 +27,7 @@ public class FakeDatabase implements IDatabase {
 		teams = new ArrayList<Team>();
 		events = new ArrayList<Event>();
 		users.add(new User("dmashuda", "daniel", "mashuda", "dmashuda@ycp.edu", HashLoginData.hashData("abc123"), new LinkedList<String>(), new LinkedList<String>()));
-		
+		workouts = new ArrayList<Workout>();
 		Team testteam = new Team("dmashuda", "Ice Dragons", "12345");
 		teams.add(testteam);
 		
@@ -266,6 +266,16 @@ public class FakeDatabase implements IDatabase {
 			}
 		}
 		return anns;
+	}
+
+	@Override
+	public ArrayList<User> getAllUsers() {
+		return users;
+	}
+
+	@Override
+	public ArrayList<Team> geteAllTeams() {
+		return teams;
 	}
 
 }

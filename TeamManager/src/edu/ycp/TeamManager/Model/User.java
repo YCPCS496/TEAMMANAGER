@@ -59,6 +59,22 @@ public class User {
 		teamsBelonging = new ArrayList<String>();
 		teamsOwned = new ArrayList<String>();
 	}
+	public ArrayList<String> getTeamsBelonging() {
+		return teamsBelonging;
+	}
+
+	public void setTeamsBelonging(ArrayList<String> teamsBelonging) {
+		this.teamsBelonging = teamsBelonging;
+	}
+
+	public ArrayList<String> getTeamsOwned() {
+		return teamsOwned;
+	}
+
+	public void setTeamsOwned(ArrayList<String> teamsOwned) {
+		this.teamsOwned = teamsOwned;
+	}
+
 	/**
 	 * 
 	 * @return user name

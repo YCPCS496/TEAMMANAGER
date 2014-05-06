@@ -1,7 +1,6 @@
 package edu.ycp.cs496.TeamManager;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.servlet.http.*;
@@ -9,14 +8,21 @@ import javax.servlet.http.*;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
+import edu.ycp.TeamManager.JSON.JSON;
+import edu.ycp.TeamManager.Model.Announcement;
 import edu.ycp.TeamManager.Model.LoginData;
 import edu.ycp.TeamManager.Model.Team;
 import edu.ycp.TeamManager.Model.User;
+import edu.ycp.TeamManager.Model.Workout;
+import edu.ycp.TeamManager.control.AddAnnouncement;
 import edu.ycp.TeamManager.control.AddTeam;
 import edu.ycp.TeamManager.control.AddUser;
+import edu.ycp.TeamManager.control.AddWorkout;
 import edu.ycp.TeamManager.control.ConfimJoin;
+import edu.ycp.TeamManager.control.GetAllTeamsClean;
+import edu.ycp.TeamManager.control.GetAllUsersClean;
 import edu.ycp.TeamManager.control.GetTeamById;
 import edu.ycp.TeamManager.control.GetUserById;
 import edu.ycp.TeamManager.control.RequestJoin;
@@ -41,9 +47,53 @@ public class TeamManagerServlet extends HttpServlet {
 		
 		// gets action 
 		String path = req.getPathInfo();
+		if(path == null){
+			return;
+		}
+			
+		
 		path = path.substring(1);
 		int slashparam = path.indexOf('/');
-		String reqString = path.substring(0, slashparam);
+		String reqString = path;
+		
+		if(slashparam == -1 || slashparam == (path.length()-1)){
+			if(reqString.contains("/")){
+				reqString = reqString.substring(0, reqString.length()-1);
+			}
+			reqString = Jsoup.clean(reqString, Whitelist.basic());
+			
+			if (reqString.equals("")) {
+				resp.setContentType("text/plain");
+				resp.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+				resp.getWriter().println("Not implemented yet: getting all: funny thing that I dont know what to do with");
+				return;
+			}
+			
+			if(reqString.equals("users")){
+				GetAllUsersClean control = new GetAllUsersClean();
+				resp.setContentType("application/json");
+				JSON.getObjectMapper().writeValue(resp.getWriter(), control.getAllUsersClean());
+				resp.setStatus(HttpServletResponse.SC_OK);
+				return;
+			}
+			if(reqString.equals("teams")){
+				GetAllTeamsClean control = new GetAllTeamsClean();
+				resp.setContentType("application/json");
+				JSON.getObjectMapper().writeValue(resp.getWriter(), control.getAllTeamsClean());
+				resp.setStatus(HttpServletResponse.SC_OK);
+				return;
+			}
+			
+			
+			
+			resp.setContentType("text/plain");
+			resp.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+			resp.getWriter().println("Not implemented yet: getting all: |"+reqString+"|");
+			return;
+		}
+		
+		reqString = path.substring(0, slashparam);
+		
 		
 		//gets target object
 		String target = path.substring(slashparam+1);
@@ -56,18 +106,22 @@ public class TeamManagerServlet extends HttpServlet {
 			String targetuser = target;
 			GetUserById control = new GetUserById();
 			User retuser = control.getUserById(targetuser);
+			if(retuser == null){
+				resp.setContentType("text/plain");
+				resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
 			retuser.setPasswordHash("NULL");
 			
 			
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.writeValue(resp.getWriter(), retuser);
+			
+			JSON.getObjectMapper().writeValue(resp.getWriter(), retuser);
 			resp.setContentType("application/json");
 			resp.setStatus(HttpServletResponse.SC_OK);
 			return;
 		}
 		if(reqString.equals("teams")){
 			String targetteam = target;
-			//TODO: Add security
 			
 			GetTeamById control = new GetTeamById();
 			Team retTeam =  control.getTeamById(targetteam);
@@ -82,18 +136,20 @@ public class TeamManagerServlet extends HttpServlet {
 				retTeam.getWorkoutids().clear();
 			}
 			
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.writeValue(resp.getWriter(), retTeam);
+			
+			JSON.getObjectMapper().writeValue(resp.getWriter(), retTeam);
 			resp.setContentType("application/json");
 			resp.setStatus(HttpServletResponse.SC_OK);
 			return;
 			
 		}
 		if(reqString.equals("workouts")){
-			
+			//TODO: get tarteted workout and return it in json
+			String targetworkout = target;
 		}
 		if(reqString.equals("announcements")){
-			
+			//TODO: get tarteted announcement and return it in json
+			String targetannouncemnet = target;
 		}
 		//if a username exists, then return welcome message
 		resp.setStatus(HttpServletResponse.SC_OK);
@@ -361,10 +417,7 @@ public class TeamManagerServlet extends HttpServlet {
 				resp.setContentType("text/plain");
 				resp.getWriter().println("Confirm player failure");
 			}
-			/*
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.writeValue(resp.getWriter(), new User());
-			*/
+			
 		}
 		if(action.equals("newAnnouncement")){
 
@@ -378,14 +431,49 @@ public class TeamManagerServlet extends HttpServlet {
 				resp.getWriter().println("Session not active, please log in");
 				return;
 			}
+						
 			
-			//TODO: add a new announcement
-		}
-		if(action.equals("newWorkout")){
 
+			
+			try{
+				Announcement proposedann = JSON.getObjectMapper().readValue(req.getInputStream(), Announcement.class);
+				if(proposedann == null){
+					resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("bad request, did you send the value in JSON?");
+					return;
+				}
+				
+				AddAnnouncement control = new AddAnnouncement();
+				boolean check = control.addAnnouncement(proposedann);
+				if(check){
+					resp.setStatus(HttpServletResponse.SC_OK);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("Announcement added successfully");
+					return;
+				}
+				else{
+					resp.setStatus(HttpServletResponse.SC_CONFLICT);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("Data was valid, but data store failed");
+					return;
+				}
+			}catch(JsonMappingException e){
+				e.printStackTrace();
+				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("bad request, did you send the value in JSON?");
+				return;
+			}
+			
+		}
+		
+			
+		
+		if(action.equals("newWorkout")){
 			HttpSession session = req.getSession();
 			String username = (String) session.getAttribute("user");
-
+			
 			// if user does not have active session, then deny access
 			if(username == null){
 				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -394,7 +482,38 @@ public class TeamManagerServlet extends HttpServlet {
 				return;
 			}
 			
-			//TODO: add a new workout
+			
+			try{
+				Workout proposedwork = JSON.getObjectMapper().readValue(req.getInputStream(), Workout.class);
+				if(proposedwork == null){
+					resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("bad request, did you send the value in JSON?");
+					return;
+				}
+				
+				AddWorkout work = new AddWorkout();
+				boolean check = work.addWorkout(proposedwork);
+				if(check){
+					resp.setStatus(HttpServletResponse.SC_OK);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("Workout added successfully");
+					return;
+				}
+				else{
+					resp.setStatus(HttpServletResponse.SC_CONFLICT);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("Data was valid, but data store failed");
+					return;
+				}
+			}catch(JsonMappingException e){
+				e.printStackTrace();
+				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("bad request, did you send the value in JSON?" + e.getStackTrace().toString());
+				return;
+			}
+			
 		}
 		
 		

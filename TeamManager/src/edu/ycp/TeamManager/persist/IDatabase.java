@@ -163,5 +163,18 @@ public interface IDatabase {
 	 */
 	public ArrayList<Announcement> getUnviewedAnnouncement(String userid);
 	
+	/**
+	 * 
+	 * @return all of the users
+	 */
+	public ArrayList<User> getAllUsers();
+	
+	
+	/**
+	 * 
+	 * @return all of the teams
+	 */
+	public ArrayList<Team> geteAllTeams();
+	
 	
 }
