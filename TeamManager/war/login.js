@@ -71,6 +71,7 @@ function createTeam(){
 
 }
 
+//not done
 function requestJoin(){
 	//Sends a request to join a team
 	var teamNameVal = $("#teamName").val();
@@ -126,7 +127,6 @@ function login(){
 
 	if ((usernameVal|| password1Val)== ""){
 		event.preventDefault();
-		alert("Login test");
 	}
 	var parm = "http://localhost:8888/teammanager?action=login";
 	$.ajax({
@@ -144,12 +144,40 @@ function login(){
 		  dataType: 'text'
 		});
 }
-/*
-function getTeam(){
-	//Get team
-	//get methods
+
+function getTeamList(){
+	
+	$.ajax({
+	      type: "GET",
+		  url: "http://localhost:8080/teammanager/teams/",
+		  success: function(data){
+		  // do something to let the user know what happened
+			 alert(data);
+		},
+		  dataType: 'text'
+		});
+	
 }
 
+//TODO: finsh
+function getTeam(TeamName){
+	//Get team
+	var teamdata=TeamName;
+	
+	//get methods
+		$.ajax({
+	      type: "GET",
+		  url: "http://localhost:8080/teammanager/teams/"+teamdata,
+		  data: teamdata,
+		  success: function(data, textStatus, jqXHR) {
+		  // do something to let the user know what happened
+		  alert(data);
+		  console.log(data);
+		},
+		  dataType: 'text'
+		});
+}
+/*
 function getUser(){
 	//Get User
 	//get methods
@@ -160,18 +188,26 @@ function getUser(){
 function createTeamView(){
 	$('body').html(
 			'<p>Team Name<input type="text" id="TeamName"></p>'+
-			'<button onclick="createTeam()">Create Team</button>'
+			'<button onclick="createTeam()">Create Team</button>'+
+			'<button onclick="getTeamList">Find Team</button>'
 			);
 }
 function loginView(){
 	//changes view to login screen 
+	
 	$('body').html(
 				'<p>Login with username <input type="text" id="username1"></p>'+
 				'<p>Password<input type="password" id="pword"></p>'+
 				'<button onclick="login()">Login</button>'+
 				'<button onclick="createTeamView()">Create Team</button>'
-				
-				);
+				 );
+	
+	$(document).ready(function(){
+		  $("button").click(function(){
+		    $('body').insertAfter("body");
+		    	//$('body')
+		  });
+		});
 	
 }
 
