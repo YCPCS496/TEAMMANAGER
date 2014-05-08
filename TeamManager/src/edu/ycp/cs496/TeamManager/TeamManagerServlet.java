@@ -23,8 +23,10 @@ import edu.ycp.TeamManager.control.AddWorkout;
 import edu.ycp.TeamManager.control.ConfimJoin;
 import edu.ycp.TeamManager.control.GetAllTeamsClean;
 import edu.ycp.TeamManager.control.GetAllUsersClean;
+import edu.ycp.TeamManager.control.GetAnnouncementById;
 import edu.ycp.TeamManager.control.GetTeamById;
 import edu.ycp.TeamManager.control.GetUserById;
+import edu.ycp.TeamManager.control.GetWorkoutById;
 import edu.ycp.TeamManager.control.RequestJoin;
 import edu.ycp.TeamManager.control.VerifyLogin;
 import edu.ycp.cs496.util.HashLoginData;
@@ -144,15 +146,29 @@ public class TeamManagerServlet extends HttpServlet {
 			
 		}
 		if(reqString.equals("workouts")){
-			//TODO: get tarteted workout and return it in json
 			String targetworkout = target;
+			GetWorkoutById control = new GetWorkoutById();
+			Workout retwork = control.getWorkoutById(targetworkout);
+			
+			JSON.getObjectMapper().writeValue(resp.getWriter(), retwork);
+			resp.setContentType("application/json");
+			resp.setStatus(HttpServletResponse.SC_OK);
+			return;
 		}
 		if(reqString.equals("announcements")){
 			//TODO: get tarteted announcement and return it in json
 			String targetannouncemnet = target;
+			
+			GetAnnouncementById control = new GetAnnouncementById();
+			Announcement retAnnouncement = control.getAnnouncementById(targetannouncemnet);
+			
+			JSON.getObjectMapper().writeValue(resp.getWriter(), retAnnouncement);
+			resp.setContentType("application/json");
+			resp.setStatus(HttpServletResponse.SC_OK);
+			return;
 		}
 		//if a username exists, then return welcome message
-		resp.setStatus(HttpServletResponse.SC_OK);
+		resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Welcome " + username + " you were identified by session: " + target);
 		
@@ -516,7 +532,29 @@ public class TeamManagerServlet extends HttpServlet {
 			
 		}
 		
-		
+		if(action.equals("viewAnnouncement")){
+			String userId = req.getParameter("userId");
+			String announcementId = req.getParameter("announcementId");
+			if(userId == null || announcementId == null){
+				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("bad request");
+				resp.getWriter().println("viewAnnoucement takes the following parameters:");
+				resp.getWriter().println("userId and announcementId");
+				return;
+			}
+			if(userId.equals("") || announcementId.equals("")){
+				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("bad request");
+				resp.getWriter().println("viewAnnoucement takes the following parameters:");
+				resp.getWriter().println("userId and announcementId");
+				return;
+			}
+			
+			
+			
+		}
 		
 		//logs user out
 		if(action.equals("logout")){
