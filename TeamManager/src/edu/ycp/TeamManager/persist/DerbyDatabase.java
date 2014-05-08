@@ -73,17 +73,27 @@ public class DerbyDatabase implements IDatabase {
 						"	teamsBelonging varchar(1000),"+
 						"	teamsOwned varchar(1000)"+
 						")");
-				/*
+				
 				maketeam = conn.prepareStatement(
 						" create table teamdata (" +
 						"	ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"+
-						"	durationMin int," +
-						"	intensity int," +
-						"	reps int," +
-						"	title varchar(100),"+
-						"	notes varchar(1000)"+
+						"	name varchar(100),"+
+						"	announcementids varchar(1000),"+
+						"	eventids varchar(1000),"+
+						"	userrequestids varchar(1000),"+
+						"	userids varchar(1000),"+
+						"	workoutids varchar(1000)"+
 						")");
-						*/
+				
+				makeannouncement = conn.prepareStatement(
+						" create table announcementdata (" +
+						"	ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"+
+						"	title varchar(100),"+
+						"	message varchar(1000),"+
+						"	usersnotviewed varchar(1000),"+
+						"	usersviewed varchar(1000)"+
+						")");
+						
 				
 				makeworkout.executeUpdate();
 				makeuser.executeUpdate();
