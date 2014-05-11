@@ -17,7 +17,7 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private String email;
-	private String sessionHash;
+	//private String sessionHash;
 	private ArrayList<String> teamsBelonging;
 	private ArrayList<String> teamsOwned;
 	
@@ -37,6 +37,7 @@ public class User {
 		this.lastname = last;
 		this.email = email;
 		teamsBelonging = new ArrayList<String>();
+		teamsBelonging.add(" ");
 		teamsOwned = new ArrayList<String>();
 		for(String team: belonged){
 			this.teamsBelonging.add(team);
@@ -44,7 +45,7 @@ public class User {
 		for(String team: owned){
 			this.teamsOwned.add(team);
 		}
-		this.sessionHash = new String("");
+		//this.sessionHash = new String("");
 	}
 	
 	/**
@@ -166,18 +167,6 @@ public class User {
 		teamsOwned.add(teamName);
 	}
 
-	/**
-	 * @return the sessionHash
-	 */
-	public String getSessionHash() {
-		return sessionHash;
-	}
-
-	/**
-	 * @param sessionHash the sessionHash to set
-	 */
-	public void setSessionHash(String sessionHash) {
-		this.sessionHash = sessionHash;
-	}
+	
 	
 }

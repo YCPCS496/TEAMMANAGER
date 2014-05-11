@@ -30,6 +30,14 @@ public class Announcement {
 		
 	}
 	
+	public List<String> getUsersViewed() {
+		return usersViewed;
+	}
+
+	public List<String> getUsersNotViewed() {
+		return usersNotViewed;
+	}
+
 	/**
 	 * Constructs an announcement
 	 * 

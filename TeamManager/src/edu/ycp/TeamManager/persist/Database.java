@@ -10,7 +10,7 @@ package edu.ycp.TeamManager.persist;
  *
  */
 public class Database {
-private static final IDatabase theInstance = new FakeDatabase();
+private static final IDatabase theInstance = new GoogleDataStoreDatabase();
 	
 	/**
 	 * Get the singleton {@link IDatabase} implementation.

@@ -3,167 +3,59 @@
  */
 package edu.ycp.TeamManager.persist;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectWriter;
 
-import edu.ycp.TeamManager.JSON.JSON;
+
+
+
+
+
+
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.QueryResultList;
+
 import edu.ycp.TeamManager.Model.Announcement;
 import edu.ycp.TeamManager.Model.Event;
 import edu.ycp.TeamManager.Model.LoginData;
 import edu.ycp.TeamManager.Model.Team;
 import edu.ycp.TeamManager.Model.User;
 import edu.ycp.TeamManager.Model.Workout;
+import edu.ycp.cs496.util.BCrypt;
 
 /**
- * @author dan mashuda
+ * @author dan
  *
  */
-public class DerbyDatabase implements IDatabase {
-	// Load JDBC Driver
-		static {
-			try {
-				Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-			} catch (Exception e) {
-				throw new IllegalStateException("Could not load Derby JDBC driver");
-			}
-		}
-		
-		// The main method creates the database tables and loads the initial data.
-		public static void main(String[] args) throws IOException {
-			
-			PreparedStatement stmt = null;
-			PreparedStatement makeworkout = null;
-			PreparedStatement makeuser = null;
-			PreparedStatement maketeam = null;
-			PreparedStatement makeannouncement = null;
-			
-			
-			try {
-				// 1. Open a connection
-				Connection conn = DriverManager.getConnection("jdbc:derby:/Users/dan/Documents/userdata.db;create=true");
-				System.out.println("Connected database successfully...");
-				
-				// 2. Execute a query to create userdata table
-				
-				makeworkout = conn.prepareStatement(
-						" create table workoutdata (" +
-						"	ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"+
-						"	durationMin int," +
-						"	intensity int," +
-						"	reps int," +
-						"	title varchar(100),"+
-						"	notes varchar(1000)"+
-						")");
-				makeuser = conn.prepareStatement(
-						" create table userdata (" +
-						"	username varchar(100) primary key,"+
-						"	email varchar(100)," +
-						"	firstname varchar(100)," +
-						"	lastname varchar(100)," +
-						"	passwordhash varchar(100)," +
-						"	teamsBelonging varchar(1000),"+
-						"	teamsOwned varchar(1000)"+
-						")");
-				
-				maketeam = conn.prepareStatement(
-						" create table teamdata (" +
-						"	ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"+
-						"	name varchar(100),"+
-						"	announcementids varchar(1000),"+
-						"	eventids varchar(1000),"+
-						"	userrequestids varchar(1000),"+
-						"	userids varchar(1000),"+
-						"	workoutids varchar(1000)"+
-						")");
-				
-				makeannouncement = conn.prepareStatement(
-						" create table announcementdata (" +
-						"	ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"+
-						"	title varchar(100),"+
-						"	message varchar(1000),"+
-						"	usersnotviewed varchar(1000),"+
-						"	usersviewed varchar(1000)"+
-						")");
-						
-				
-				makeworkout.executeUpdate();
-				makeuser.executeUpdate();
-				maketeam.executeUpdate();
-				makeannouncement.executeUpdate();
-				//stmt.executeUpdate();
-				System.out.println("Created table in given database...");
-			} 
-			catch (SQLException se) {
-				se.printStackTrace();
-			}
-			finally {
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						// ignore
-					}
-				}
-			}	
-		}
-
+public class GoogleDataStoreDatabase implements IDatabase {
+	
+	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	/* (non-Javadoc)
 	 * @see edu.ycp.TeamManager.persist.IDatabase#makeuser(edu.ycp.TeamManager.Model.User)
 	 */
 	@Override
 	public boolean makeuser(User use) {
-
-		PreparedStatement createUser = null;
-		try {
-			String belongjson = null;
-			
-			belongjson = JSON.getObjectMapper().writer().writeValueAsString(use.getTeamsBelonging());
-			String ownedjson;
-			
-			ownedjson = JSON.getObjectMapper().writer().writeValueAsString(use.getTeamsOwned());
-			// Set up connection 
-			//you need the full path to db to work
-			Connection conn = DriverManager.getConnection("jdbc:derby:/Users/dan/Documents/userdata.db;create=true");
-			// Prepare insert statement and execute
-			createUser = conn.prepareStatement("insert into userdata values (?, ?, ?, ?, ?, ?, ?)");
-			createUser.setString(1, use.getUsername());
-			createUser.setString(2, use.getEmail());
-			createUser.setString(3, use.getFirstname());
-			createUser.setString(4, use.getLastname());
-			createUser.setString(5, use.getPasswordHash());
-			createUser.setString(6, belongjson);
-			createUser.setString(7, ownedjson);
-			createUser.addBatch();
-			createUser.executeBatch();
-			
-			return true;
+		Entity newuser = new Entity("User");
+		newuser.setProperty("username", use.getUsername());
+		newuser.setProperty("passwordhash", use.getPasswordHash());
+		newuser.setProperty("firstname", use.getFirstname());
+		newuser.setProperty("lastname", use.getLastname());
+		newuser.setProperty("email", use.getEmail());
+		newuser.setProperty("teamsbelonging", use.getTeamsBelonging());
+		newuser.setProperty("teamsowned", use.getTeamsOwned());
+		Key check = datastore.put(newuser);
+		if(check == null){
+			return false;
 		}
-		catch (SQLException se) {
-			se.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally {	// close the prepared statement
-			if (createUser != null) {
-				try {
-					createUser.close();
-				} catch (SQLException e) {
-					// ignore
-				}
-			}
-		}
-		
-		
-		
-		return false;
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -171,8 +63,21 @@ public class DerbyDatabase implements IDatabase {
 	 */
 	@Override
 	public Boolean Login(LoginData login) {
-		// TODO Auto-generated method stub
-		return null;
+	
+		Query q = new Query("User").setFilter(new Query.FilterPredicate("username", Query.FilterOperator.EQUAL, login.getUsername()));
+		PreparedQuery pq = datastore.prepare(q);
+		
+		FetchOptions fetchOptions = FetchOptions.Builder.withLimit(5);
+		QueryResultList<Entity> results = pq.asQueryResultList(fetchOptions);
+		for(Entity e: results){
+			String hash = (String) e.getProperty("passwordhash");
+			if(BCrypt.checkpw(login.getPassword(), hash)){
+				return true;
+			}
+		}
+		
+		
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -180,8 +85,20 @@ public class DerbyDatabase implements IDatabase {
 	 */
 	@Override
 	public Boolean makeTeam(Team team) {
-		// TODO Auto-generated method stub
-		return null;
+		Entity newteam = new Entity("Team");
+		newteam.setProperty("userids", team.getUserids());
+		newteam.setProperty("useridRequests", team.getUseridRequests());
+		newteam.setProperty("owners", team.getOwners());
+		newteam.setProperty("announcmentids", team.getAnnouncmentids());
+		newteam.setProperty("eventids", team.getEventids());
+		newteam.setProperty("workoutids", team.getWorkoutids());
+		newteam.setProperty("teamName", team.getTeamName());
+		
+		Key check = datastore.put(newteam);
+		if(check == null){
+			return false;
+		}
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -270,8 +187,18 @@ public class DerbyDatabase implements IDatabase {
 	 */
 	@Override
 	public boolean addWorkout(Workout work) {
-		// TODO Auto-generated method stub
-		return false;
+		Entity workout = new Entity("workout");
+		workout.setProperty("title", work.getTitle());
+		workout.setProperty("notes", work.getNotes());
+		workout.setProperty("durationmin", work.getDurationMin());
+		workout.setProperty("intensity", work.getIntensity());
+		workout.setProperty("reps", work.getReps());
+		
+		Key check = datastore.put(workout);
+		if(check == null){
+			return false;
+		}
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -288,8 +215,18 @@ public class DerbyDatabase implements IDatabase {
 	 */
 	@Override
 	public boolean addAnnouncement(Announcement ann) {
-		// TODO Auto-generated method stub
-		return false;
+		Entity announce = new Entity("announcement");
+		announce.setProperty("usersviewed", ann.getUsersViewed());
+		announce.setProperty("usersnotviewed", ann.getUsersNotViewed());
+		announce.setProperty("title", ann.getTitle());
+		announce.setProperty("message", ann.getMessage());
+		announce.setProperty("id", ann.getId());
+		
+		Key check = datastore.put(announce);
+		if(check == null){
+			return false;
+		}
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -342,8 +279,30 @@ public class DerbyDatabase implements IDatabase {
 	 */
 	@Override
 	public ArrayList<User> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<User> users = new ArrayList<User>();
+		Query q = new Query("User");
+		PreparedQuery pq = datastore.prepare(q);
+		
+		FetchOptions fetchOptions = FetchOptions.Builder.withDefaults();
+		QueryResultList<Entity> results = pq.asQueryResultList(fetchOptions);
+		for(Entity e: results){
+			
+			User u = new User();
+			
+			u.setPasswordHash((String)e.getProperty("passwordhash"));
+			u.setUsername((String)e.getProperty("username"));
+			u.setFirstname((String)e.getProperty("firstname"));
+			u.setLastname((String)e.getProperty("lastname"));
+			u.setEmail( (String) e.getProperty("email"));
+			u.setTeamsBelonging((ArrayList<String>)e.getProperty("teamsbelonging"));
+			u.setTeamsOwned((ArrayList<String>)e.getProperty("teamsowned"));
+			
+			
+			users.add(u);
+			
+		}
+		
+		return users;
 	}
 
 	/* (non-Javadoc)
@@ -351,8 +310,27 @@ public class DerbyDatabase implements IDatabase {
 	 */
 	@Override
 	public ArrayList<Team> geteAllTeams() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Team> teams = new ArrayList<Team>();
+		Query q = new Query("Team");
+		PreparedQuery pq = datastore.prepare(q);
+		
+		FetchOptions fetchOptions = FetchOptions.Builder.withDefaults();
+		QueryResultList<Entity> results = pq.asQueryResultList(fetchOptions);
+		for(Entity e: results){
+			
+			Team t = new Team();
+			t.setAnnouncmentids((ArrayList<String>)e.getProperty("announcmentids"));
+			t.setUserids((ArrayList<String>) e.getProperty("userids"));
+			t.setUseridRequests((ArrayList<String>) e.getProperty("useridRequests"));
+			t.setEventids((ArrayList<String>) e.getProperty("eventids"));
+			t.setWorkoutids((ArrayList<String>) e.getProperty("workoutids"));
+			t.setId((String) e.getKey().toString());
+			t.setTeamName((String) e.getProperty("teamName"));
+			
+			teams.add(t);
+			
+		}
+		return teams;
 	}
 
 }

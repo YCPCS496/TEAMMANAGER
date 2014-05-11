@@ -36,10 +36,14 @@ public class Team {
 	public Team(String ownerid, String teamName, String teamId){
 		userids = new ArrayList<String>();
 		useridRequests = new ArrayList<String>();
+		useridRequests.add(" ");
 		owners = new ArrayList<String>();
 		announcmentids = new ArrayList<String>();
+		announcmentids.add(" ");
 		eventids = new ArrayList<String>();
+		eventids.add(" ");
 		workoutids = new ArrayList<String>();
+		workoutids.add(" ");
 		id = teamId;
 		this.teamName = teamName;
 		
