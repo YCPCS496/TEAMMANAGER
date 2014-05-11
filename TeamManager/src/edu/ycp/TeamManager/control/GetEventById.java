@@ -7,8 +7,8 @@ import edu.ycp.TeamManager.persist.IDatabase;
 public class GetEventById {
 	public Event getEventById(String id){
 		IDatabase db = Database.getInstance();
-		return db.getEventById(id);
-
+		//return db.getEventById(id);
+		return null;
 	}
 
 }

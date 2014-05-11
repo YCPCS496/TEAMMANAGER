@@ -82,14 +82,6 @@ public interface IDatabase {
 	 */
 	public ArrayList<String> getUserIds(String teamId);
 	
-	/**
-	 * Returns the username of the users that the userId matches
-	 * 
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public String getUsernameById(String userId);
 	
 	/**
 	 * 
@@ -134,19 +126,6 @@ public interface IDatabase {
 	 */
 	public Announcement getAnnouncementById(String annId);
 	
-	/**
-	 * 
-	 * @param even
-	 * @return
-	 */
-	public boolean addEvent(Event even);
-	
-	/**
-	 * 
-	 * @param evid
-	 * @return
-	 */
-	public Event getEventById(String evid);
 	
 	/**
 	 * 

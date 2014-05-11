@@ -130,6 +130,7 @@ public class TeamManagerServlet extends HttpServlet {
 			
 			// if the user is not part of the team, then clear
 			//the team data except owners names and team name
+			/*
 			if(!retTeam.getUserids().contains(username)){
 				retTeam.getEventids().clear();
 				retTeam.getUserids().clear();
@@ -137,7 +138,7 @@ public class TeamManagerServlet extends HttpServlet {
 				retTeam.getEventids().clear();
 				retTeam.getWorkoutids().clear();
 			}
-			
+			*/
 			
 			JSON.getObjectMapper().writeValue(resp.getWriter(), retTeam);
 			resp.setContentType("application/json");

@@ -7,7 +7,8 @@ import edu.ycp.TeamManager.persist.IDatabase;
 public class AddEvent {
 	public boolean addEvent(Event even){
 		IDatabase db = Database.getInstance();
-		return db.addEvent(even);
+		//return db.addEvent(even);
+		return false;
 	}
 
 }

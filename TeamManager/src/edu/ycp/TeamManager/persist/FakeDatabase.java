@@ -153,16 +153,7 @@ public class FakeDatabase implements IDatabase {
 		return null;
 	}
 
-	@Override
-	public String getUsernameById(String userId) {
-		
-		for(User u: users){
-			if(u.getUsername().equals(userId)){
-				return u.getFirstname() + " " + u.getLastname();
-			}
-		}
-		return null;
-	}
+
 
 	@Override
 	public User getUserById(String userId) {
@@ -226,26 +217,6 @@ public class FakeDatabase implements IDatabase {
 		return null;
 	}
 
-	@Override
-	public boolean addEvent(Event even) {
-		for(Event e: events){
-			if(e.getId().equals(even)){
-				return false;
-			}
-		}
-		events.add(even);
-		return true;
-	}
-
-	@Override
-	public Event getEventById(String evid) {
-		for(Event e: events){
-			if(e.getId().equals(evid)){
-				return e;
-			}
-		}
-		return null;
-	}
 
 	@Override
 	public boolean viewAnnouncement(String announcementid, String playerid) {

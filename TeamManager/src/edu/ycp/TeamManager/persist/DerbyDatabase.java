@@ -241,11 +241,7 @@ public class DerbyDatabase implements IDatabase {
 	/* (non-Javadoc)
 	 * @see edu.ycp.TeamManager.persist.IDatabase#getUsernameById(java.lang.String)
 	 */
-	@Override
-	public String getUsernameById(String userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	/* (non-Javadoc)
 	 * @see edu.ycp.TeamManager.persist.IDatabase#getUserById(java.lang.String)
@@ -301,23 +297,6 @@ public class DerbyDatabase implements IDatabase {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.ycp.TeamManager.persist.IDatabase#addEvent(edu.ycp.TeamManager.Model.Event)
-	 */
-	@Override
-	public boolean addEvent(Event even) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.ycp.TeamManager.persist.IDatabase#getEventById(java.lang.String)
-	 */
-	@Override
-	public Event getEventById(String evid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/* (non-Javadoc)
 	 * @see edu.ycp.TeamManager.persist.IDatabase#viewAnnouncement(java.lang.String, java.lang.String)
