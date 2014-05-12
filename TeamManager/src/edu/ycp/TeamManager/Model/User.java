@@ -45,6 +45,7 @@ public class User {
 		for(String team: owned){
 			this.teamsOwned.add(team);
 		}
+		teamsOwned.add(" ");
 		//this.sessionHash = new String("");
 	}
 	

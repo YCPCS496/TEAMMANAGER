@@ -86,6 +86,18 @@ public class GoogleDataStoreDatabase implements IDatabase {
 		newteam.setProperty("teamName", team.getTeamName());
 		
 		Key check = datastore.put(newteam);
+		
+		String userId = team.getOwners().get(0);
+		Query q = new Query("User").setFilter(new Query.FilterPredicate("username", Query.FilterOperator.EQUAL, userId ));
+		PreparedQuery pq = datastore.prepare(q);
+		
+		FetchOptions fetchopt = FetchOptions.Builder.withDefaults();
+		QueryResultList<Entity> results = pq.asQueryResultList(fetchopt);
+		for(Entity e: results){
+			((ArrayList<String>) e.getProperty("teamsowned")).add(String.valueOf(check.getId()));
+			((ArrayList<String>) e.getProperty("teamsbelonging")).add(String.valueOf(check.getId()));
+			datastore.put(e);
+		}
 		if(check == null){
 			return false;
 		}
@@ -97,7 +109,18 @@ public class GoogleDataStoreDatabase implements IDatabase {
 	 */
 	@Override
 	public boolean requestJoinTeam(String userId, String teamId) {
-		// TODO Auto-generated method stub
+		Query q = new Query("Team").setFilter(new Query.FilterPredicate(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, KeyFactory.createKey("Team", Long.parseLong(teamId))));
+		PreparedQuery pq = datastore.prepare(q);
+		
+		FetchOptions fetchopt = FetchOptions.Builder.withDefaults();
+		QueryResultList<Entity> results = pq.asQueryResultList(fetchopt);
+		for(Entity e: results){
+			ArrayList<String> requs = (ArrayList<String>) e.getProperty("useridRequests");
+			requs.add(userId);
+			e.setProperty("useridRequests", requs);
+			datastore.put(e);
+			return true;
+		}
 		return false;
 	}
 
@@ -107,7 +130,33 @@ public class GoogleDataStoreDatabase implements IDatabase {
 	@Override
 	public boolean confirmPlayer(String userId, String teamId) {
 		// TODO Auto-generated method stub
-		return false;
+		Query q = new Query("Team").setFilter(new Query.FilterPredicate(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, KeyFactory.createKey("Team", Long.parseLong(teamId))));
+		PreparedQuery pq = datastore.prepare(q);
+		
+		FetchOptions fetchopt = FetchOptions.Builder.withDefaults();
+		QueryResultList<Entity> results = pq.asQueryResultList(fetchopt);
+		for(Entity e: results){
+			if(((ArrayList<String>) e.getProperty("useridRequests")).contains(userId)){
+				((ArrayList<String>) e.getProperty("useridRequests")).remove(userId);
+				((ArrayList<String>) e.getProperty("userids")).add(userId);
+				datastore.put(e);
+			}
+			
+		}
+		
+		q = new Query("User").setFilter(new Query.FilterPredicate("username", Query.FilterOperator.EQUAL, userId));
+		pq = datastore.prepare(q);
+		
+		FetchOptions fetchOptions = FetchOptions.Builder.withLimit(1);
+		results = pq.asQueryResultList(fetchOptions);
+		for(Entity e: results){
+			if(!((ArrayList<String>) e.getProperty("teamsbelonging")).contains(teamId)){
+				((ArrayList<String>) e.getProperty("teamsbelonging")).add(teamId);
+			}
+			
+			datastore.put(e);
+		}
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -206,6 +255,7 @@ public class GoogleDataStoreDatabase implements IDatabase {
 			Team t = new Team();
 			t.setAnnouncmentids((ArrayList<String>)e.getProperty("announcmentids"));
 			t.setUserids((ArrayList<String>) e.getProperty("userids"));
+			t.setOwners((ArrayList<String>) e.getProperty("owners"));
 			t.setUseridRequests((ArrayList<String>) e.getProperty("useridRequests"));
 			t.setEventids((ArrayList<String>) e.getProperty("eventids"));
 			t.setWorkoutids((ArrayList<String>) e.getProperty("workoutids"));
@@ -325,7 +375,23 @@ public class GoogleDataStoreDatabase implements IDatabase {
 	 */
 	@Override
 	public boolean viewAnnouncement(String announcementid, String playerid) {
-		// TODO Auto-generated method stub
+		
+		Query q = new Query("announcement").setFilter(new Query.FilterPredicate(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, KeyFactory.createKey("announcement", Long.parseLong(announcementid))));
+		PreparedQuery pq = datastore.prepare(q);
+		
+		FetchOptions fetchopt = FetchOptions.Builder.withDefaults();
+		QueryResultList<Entity> results = pq.asQueryResultList(fetchopt);
+		for(Entity e: results){
+			ArrayList<String> usersviewed =( (ArrayList<String>) (e.getProperty("usersviewed")));
+			ArrayList<String> usersnotviewed =( (ArrayList<String>) (e.getProperty("usersnotviewed")));
+			usersviewed.add(playerid);
+			usersnotviewed.remove(playerid);
+			e.setProperty("usersviewed", usersviewed);
+			e.setProperty("usersnotviewed", usersnotviewed);
+			datastore.put(e);
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -401,6 +467,7 @@ public class GoogleDataStoreDatabase implements IDatabase {
 			t.setWorkoutids((ArrayList<String>) e.getProperty("workoutids"));
 			t.setId(String.valueOf(e.getKey().getId()));
 			t.setTeamName((String) e.getProperty("teamName"));
+			t.setOwners((ArrayList<String>) e.getProperty("owners"));
 			
 			teams.add(t);
 			
