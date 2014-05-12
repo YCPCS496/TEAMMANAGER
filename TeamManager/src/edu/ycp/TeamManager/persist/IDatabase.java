@@ -103,7 +103,7 @@ public interface IDatabase {
 	 * @param work
 	 * @return
 	 */
-	public boolean addWorkout(Workout work);
+	public boolean addWorkout(Workout work, String teamId);
 	
 	/**
 	 * 
@@ -117,7 +117,7 @@ public interface IDatabase {
 	 * @param ann
 	 * @return
 	 */
-	public boolean addAnnouncement(Announcement ann);
+	public boolean addAnnouncement(Announcement ann, String teamId);
 	
 	/**
 	 * 

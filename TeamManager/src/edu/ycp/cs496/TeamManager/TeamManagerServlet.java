@@ -460,9 +460,15 @@ public class TeamManagerServlet extends HttpServlet {
 					resp.getWriter().println("bad request, did you send the value in JSON?");
 					return;
 				}
-				
+				User tryus = new GetUserById().getUserById(username);
+				if(tryus.getTeamsOwned().size()==0){
+					resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("bad request, does the user own a team?");
+					return;
+				}
 				AddAnnouncement control = new AddAnnouncement();
-				boolean check = control.addAnnouncement(proposedann);
+				boolean check = control.addAnnouncement(proposedann, tryus.getTeamsOwned().get(0));
 				if(check){
 					resp.setStatus(HttpServletResponse.SC_OK);
 					resp.setContentType("text/plain");
@@ -508,9 +514,15 @@ public class TeamManagerServlet extends HttpServlet {
 					resp.getWriter().println("bad request, did you send the value in JSON?");
 					return;
 				}
-				
+				User tryus = new GetUserById().getUserById(username);
+				if(tryus.getTeamsOwned().size()==0){
+					resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("bad request, does the user own a team?");
+					return;
+				}
 				AddWorkout work = new AddWorkout();
-				boolean check = work.addWorkout(proposedwork);
+				boolean check = work.addWorkout(proposedwork, tryus.getTeamsOwned().get(0));
 				if(check){
 					resp.setStatus(HttpServletResponse.SC_OK);
 					resp.setContentType("text/plain");

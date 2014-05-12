@@ -12,8 +12,8 @@ import edu.ycp.TeamManager.persist.IDatabase;
  *
  */
 public class AddWorkout {
-	public boolean addWorkout(Workout work) {
+	public boolean addWorkout(Workout work, String teamid) {
 		IDatabase db = Database.getInstance();
-		return db.addWorkout(work);
+		return db.addWorkout(work, teamid);
 	}
 }

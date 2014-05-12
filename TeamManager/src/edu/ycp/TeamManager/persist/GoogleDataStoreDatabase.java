@@ -129,7 +129,6 @@ public class GoogleDataStoreDatabase implements IDatabase {
 	 */
 	@Override
 	public boolean confirmPlayer(String userId, String teamId) {
-		// TODO Auto-generated method stub
 		Query q = new Query("Team").setFilter(new Query.FilterPredicate(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, KeyFactory.createKey("Team", Long.parseLong(teamId))));
 		PreparedQuery pq = datastore.prepare(q);
 		
@@ -276,7 +275,7 @@ public class GoogleDataStoreDatabase implements IDatabase {
 	 * @see edu.ycp.TeamManager.persist.IDatabase#addWorkout(edu.ycp.TeamManager.Model.Workout)
 	 */
 	@Override
-	public boolean addWorkout(Workout work) {
+	public boolean addWorkout(Workout work, String teamId) {
 		Entity workout = new Entity("workout");
 		workout.setProperty("title", work.getTitle());
 		workout.setProperty("notes", work.getNotes());
@@ -288,6 +287,20 @@ public class GoogleDataStoreDatabase implements IDatabase {
 		if(check == null){
 			return false;
 		}
+		
+		ArrayList<Team> teams = new ArrayList<Team>();
+		//System.out.println(KeyFactory.createKey("Team", teamId));
+		Query q = new Query("Team").setFilter(new Query.FilterPredicate(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, KeyFactory.createKey("Team", Long.parseLong(teamId))));
+		PreparedQuery pq = datastore.prepare(q);
+		
+		FetchOptions fetchOptions = FetchOptions.Builder.withDefaults();
+		QueryResultList<Entity> results = pq.asQueryResultList(fetchOptions);
+		//System.out.println(results.size());
+		for(Entity e: results){
+			((ArrayList<String>) e.getProperty("workoutids")).add(String.valueOf(check.getId()));
+			datastore.put(e);
+		}
+		
 		return true;
 	}
 
@@ -297,7 +310,7 @@ public class GoogleDataStoreDatabase implements IDatabase {
 	@Override
 	public Workout getWorkout(String workoutId) {
 		ArrayList<Workout> work = new ArrayList<Workout>();
-		Query q = new Query("announcement").setFilter(new Query.FilterPredicate(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, KeyFactory.createKey("workout", Long.parseLong(workoutId))));
+		Query q = new Query("workout").setFilter(new Query.FilterPredicate(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, KeyFactory.createKey("workout", Long.parseLong(workoutId))));
 		PreparedQuery pq = datastore.prepare(q);
 		
 		FetchOptions fetchOptions = FetchOptions.Builder.withDefaults();
@@ -322,16 +335,30 @@ public class GoogleDataStoreDatabase implements IDatabase {
 	 * @see edu.ycp.TeamManager.persist.IDatabase#addAnnouncement(edu.ycp.TeamManager.Model.Announcement)
 	 */
 	@Override
-	public boolean addAnnouncement(Announcement ann) {
+	public boolean addAnnouncement(Announcement ann, String teamId) {
 		Entity announce = new Entity("announcement");
 		announce.setProperty("usersviewed", ann.getUsersViewed());
 		announce.setProperty("usersnotviewed", ann.getUsersNotViewed());
 		announce.setProperty("title", ann.getTitle());
 		announce.setProperty("message", ann.getMessage());
-		
+		//TODO: add the announcement to the top team
 		Key check = datastore.put(announce);
 		if(check == null){
 			return false;
+		}
+		
+		
+		ArrayList<Team> teams = new ArrayList<Team>();
+		//System.out.println(KeyFactory.createKey("Team", teamId));
+		Query q = new Query("Team").setFilter(new Query.FilterPredicate(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, KeyFactory.createKey("Team", Long.parseLong(teamId))));
+		PreparedQuery pq = datastore.prepare(q);
+		
+		FetchOptions fetchOptions = FetchOptions.Builder.withDefaults();
+		QueryResultList<Entity> results = pq.asQueryResultList(fetchOptions);
+		//System.out.println(results.size());
+		for(Entity e: results){
+			((ArrayList<String>) e.getProperty("announcmentids")).add(String.valueOf(check.getId()));
+			datastore.put(e);
 		}
 		return true;
 	}

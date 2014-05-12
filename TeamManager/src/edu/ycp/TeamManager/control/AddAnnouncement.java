@@ -5,8 +5,8 @@ import edu.ycp.TeamManager.persist.Database;
 import edu.ycp.TeamManager.persist.IDatabase;
 
 public class AddAnnouncement {
-	public boolean addAnnouncement(Announcement ann){
+	public boolean addAnnouncement(Announcement ann, String teamid){
 		IDatabase db = Database.getInstance();
-		return db.addAnnouncement(ann);
+		return db.addAnnouncement(ann, teamid);
 	}
 }

@@ -176,7 +176,7 @@ public class FakeDatabase implements IDatabase {
 	}
 
 	@Override
-	public boolean addWorkout(Workout work) {
+	public boolean addWorkout(Workout work, String teamId) {
 		for(Workout w: workouts){
 			if(w.getId().equals(work.getId())){
 				return false;
@@ -197,7 +197,7 @@ public class FakeDatabase implements IDatabase {
 	}
 
 	@Override
-	public boolean addAnnouncement(Announcement ann) {
+	public boolean addAnnouncement(Announcement ann, String teamId) {
 		for(Announcement announce: announcements){
 			if(ann.getId().equals(announce.getId())){
 				return false;
