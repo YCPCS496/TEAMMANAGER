@@ -1,7 +1,7 @@
 var count = 3;
 
-//simple function to validate information
-function validate(objForm) {
+//simple function to createUser information
+function createUser(objForm) {
 var usernameVal = $("#username").val();
 	
 var password1Val = $("#pword1").val();
@@ -51,7 +51,7 @@ var emailVal = $("#email1").val();
 }
 
 function createTeam(){
-	var teamNameVal = $("#TeamName").val();
+	var teamName = $("#TeamName").val();
 
 	//creates a team
 	var param = "http://localhost:8888/teammanager?action=newTeam";
@@ -59,7 +59,7 @@ function createTeam(){
 	  type: "POST",
 	  url: param,
 	  data: {
-		  TeamName: teamNameVal
+		  TeamName: teamName
 	  },
 	  success: function(data, textStatus, jqXHR) {
 		// do something to let the user know what happened
@@ -72,17 +72,14 @@ function createTeam(){
 }
 
 //TODO:needs fixing (data)
-function requestJoin(){
-	//Sends a request to join a team
-	var teamNameVal = $("#teamName").val();
-
+function requestJoin(teamid){
 	//creates a team
 	var param = "http://localhost:8888/teammanager?action=requestJoin";
 	$.ajax({
 	  type: "POST",
 	  url: param,
 	  data: {
-		TeamID: teamNameVal
+		TeamID: teamid
 	  },
 	  success: function(data, textStatus, jqXHR) {
 		// do something to let the user know what happened
@@ -95,9 +92,8 @@ function requestJoin(){
 }
 
 
-function confirmJoin(){
+function confirmJoin(teamid, userconfirm){
 	//Confirms a join to a team
-	var teamNameVal = $("#teamName").val();
 
 	//creates a team
 	var param = "http://localhost:8888/teammanager?action=confirmJoin";
@@ -105,11 +101,12 @@ function confirmJoin(){
 	  type: "POST",
 	  url: param,
 	  data: {
-		TeamID: teamNameVal,
+		TeamID: teamid,
+		UserConfirm: userconfirm
 	  },
 	  success: function(data, textStatus, jqXHR) {
 		// do something to let the user know what happened
-		alert(data);
+		//alert(data);
 		console.log(data);
 	  },
 	  dataType: 'text'
@@ -148,7 +145,7 @@ function getTeamList(){
 	
 	$.ajax({
 	      type: "GET",
-		  url: "http://localhost:8080/teammanager/teams/",
+		  url: "http://localhost:8888/teammanager/teams/",
 		  success: function(data){
 		  // do something to let the user know what happened
 			 alert(data);
@@ -166,7 +163,7 @@ function getTeam(TeamName){
 	//get methods
 		$.ajax({
 	      type: "GET",
-		  url: "http://localhost:8080/teammanager/teams/"+teamdata,
+		  url: "http://localhost:8888/teammanager/teams/"+teamdata,
 		  data: teamdata,
 		  success: function(data, textStatus, jqXHR) {
 		  // do something to let the user know what happened
@@ -176,13 +173,99 @@ function getTeam(TeamName){
 		  dataType: 'text'
 		});
 }
-/*
-function getUser(){
-	//Get User
-	//get methods
+
+function newAnnouncement(){
+	//make a new announcement
 	
+	var announcement = JSON.stringify({
+		  "usersViewed" : [ ],
+		  "usersNotViewed" : [ ],
+		  "title" : $("#title").val(),
+		  "message" : $("#message").val(),
+		  "id" : " "
+		});
+
+
+
+	var parm = "http://localhost:8888/teammanager?action=newAnnouncement";
+	$.ajax({
+		type: "POST",
+		url: parm,
+		data: workout,
+		success: function(data, textStatus, jqXHR) {
+			// do something to let the user know what happened
+			//alert(data);
+			console.log(data);
+		},
+		contentType: "application/json",
+		dataType: "json"
+	});
 }
-*/
+
+function viewAnnoucement(annid){
+	
+	var parm = "http://localhost:8888/teammanager?action=viewAnnouncement";
+	$.ajax({
+		type: "POST",
+		url: parm,
+		data: {
+			announcementId: annid
+		},
+		success: function(data, textStatus, jqXHR) {
+			// do something to let the user know what happened
+			//alert(data);
+			console.log(data);
+		},
+		dataType: 'text'
+	});
+}
+
+function newWorkout(){
+	//add workouts
+	var workout = JSON.stringify({
+		"title" : $("#title").val(),
+		"notes" : $("#notes").val(),
+		"durationMin" : $("#duration").val(),
+		"intensity" : $("#intensity").val(),
+		"reps" : $("#reps").val(),
+		"id" : " "
+	});
+
+
+
+	var parm = "http://localhost:8888/teammanager?action=newWorkout";
+	$.ajax({
+		type: "POST",
+		url: parm,
+		data: workout,
+		success: function(data, textStatus, jqXHR) {
+			// do something to let the user know what happened
+			//alert(data);
+			console.log(data);
+		},
+		contentType: "application/json",
+		dataType: "json"
+	});
+}
+
+function logout(){
+
+	var parm = "http://localhost:8888/teammanager?action=logout";
+	$.ajax({
+		type: "POST",
+		url: parm,
+		data: {
+			announcementId: "test"
+		},
+		success: function(data, textStatus, jqXHR) {
+			// do something to let the user know what happened
+			//alert(data);
+			console.log(data);
+		},
+		dataType: 'text'
+	});
+}
+
 
 function createTeamView(){
 	$('body').html(
@@ -224,7 +307,7 @@ function clearScreen(){
 			  '<p>First Name<input type="text" id="firstName"></p>'+
 			  '<p>Last Name<input type="text" id="lastName"></p>'+
 			  '<p>Enter Email<input type="text" id="email1"></p>'+
-			  '<button onclick="validate()">Create User</button>'+
+			  '<button onclick="createUser()">Create User</button>'+
 			  '<button onclick="loginView()">Login</button>'
 			  );;
 }
