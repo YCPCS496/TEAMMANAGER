@@ -27,7 +27,7 @@ var emailVal = $("#email1").val();
 	if(password1Val == password2Val){
 		$.ajax({
 		  type: "POST",
-		  url: "http://localhost:8888/teammanager?action=newUser",
+		  url: "/teammanager?action=newUser",
 		  data: {
 			username: usernameVal,
 			password1: password1Val,
@@ -53,7 +53,7 @@ function createTeam(){
 	var teamName = $("#TeamName").val();
 
 	//creates a team
-	var param = "http://localhost:8888/teammanager?action=newTeam";
+	var param = "/teammanager?action=newTeam";
 	$.ajax({
 	  type: "POST",
 	  url: param,
@@ -73,7 +73,7 @@ function createTeam(){
 //TODO:needs fixing (data)
 function requestJoin(teamid){
 	//creates a team
-	var param = "http://localhost:8888/teammanager?action=requestJoin";
+	var param = "/teammanager?action=requestJoin";
 	$.ajax({
 	  type: "POST",
 	  url: param,
@@ -95,7 +95,7 @@ function confirmJoin(teamid, userconfirm){
 	//Confirms a join to a team
 
 	//creates a team
-	var param = "http://localhost:8888/teammanager?action=confirmJoin";
+	var param = "/teammanager?action=confirmJoin";
 	$.ajax({
 	  type: "POST",
 	  url: param,
@@ -123,7 +123,7 @@ function login(){
 	if ((usernameVal|| password1Val)== ""){
 		event.preventDefault();
 	}
-	var parm = "http://localhost:8888/teammanager?action=login";
+	var parm = "/teammanager?action=login";
 	$.ajax({
 		  type: "POST",
 		  url: parm,
@@ -144,7 +144,7 @@ function getTeamList(){
 	
 	$.ajax({
 	      type: "GET",
-		  url: "http://localhost:8888/teammanager/Teams",
+		  url: "/teammanager/Teams",
 		  success: function(data){
 		  // do something to let the user know what happened
 			 alert(data);
@@ -159,7 +159,7 @@ function getTeamList(){
 function getTeamsId(){
 	$.ajax({
 	      type: "GET",
-		  url: "http://localhost:8888/teammanager/Teams/teamid",
+		  url: "/teammanager/Teams/teamid",
 		  success: function(data){
 		  // do something to let the user know what happened
 			 console.log(data);
@@ -174,7 +174,7 @@ function getTeamsId(){
 function getUsers(){
 	$.ajax({
 	      type: "GET",
-		  url: "http://localhost:8888/teammanager/users",
+		  url: "/teammanager/users",
 		  success: function(data){
 		  // do something to let the user know what happened
 			 console.log(data);
@@ -189,7 +189,7 @@ function getUsers(){
 function getUserId(){
 	$.ajax({
 	      type: "GET",
-		  url: "http://localhost:8888/teammanager/users/userid",
+		  url: "/teammanager/users/userid",
 		  success: function(data){
 		  // do something to let the user know what happened
 			 console.log(data);
@@ -214,7 +214,7 @@ function newAnnouncement(){
 
 
 
-	var parm = "http://localhost:8888/teammanager?action=newAnnouncement";
+	var parm = "/teammanager?action=newAnnouncement";
 	$.ajax({
 		type: "POST",
 		url: parm,
@@ -231,7 +231,7 @@ function newAnnouncement(){
 
 function viewAnnoucement(annid){
 	
-	var parm = "http://localhost:8888/teammanager?action=viewAnnouncement";
+	var parm = "/teammanager?action=viewAnnouncement";
 	$.ajax({
 		type: "POST",
 		url: parm,
@@ -247,7 +247,7 @@ function viewAnnoucement(annid){
 	});
 }
 
-function newWorkout(){
+function addWorkout(){
 	//add workouts
 	var workout = JSON.stringify({
 		"title" : $("#title").val(),
@@ -260,7 +260,7 @@ function newWorkout(){
 
 
 
-	var parm = "http://localhost:8888/teammanager?action=newWorkout";
+	var parm = "/teammanager?action=newWorkout";
 	$.ajax({
 		type: "POST",
 		url: parm,
@@ -273,11 +273,12 @@ function newWorkout(){
 		contentType: "application/json",
 		dataType: "json"
 	});
+	alert("Your workout has been added!");
 }
 
 function logout(){
 
-	var parm = "http://localhost:8888/teammanager?action=logout";
+	var parm = "/teammanager?action=logout";
 	$.ajax({
 		type: "POST",
 		url: parm,
@@ -302,7 +303,13 @@ function createTeamView(){
 			'<button onClick="createTeam()">Create Team</button>'+
 			'<button onclick="getTeamList()">Find Team</button>'+
 			'<button onClick="logout()">logout</button>'+
-			'<button onClick="mainMenu()">Back to the Team Manger Page</button>'
+			'<button onClick="mainMenu()">Back to the Team Manger Page</button>'+
+			'<button onClick="addWorkoutView()">add Workout Page</button>'+
+			'<button onClick="confirmUserView()">Confirm A User</button>'+
+			'<button onClick="requestJoin()">Request A Team</button>'
+			
+			//'<button onClick="addWorkoutView()">Confirm Join Page</button>'
+			//'<button onClick="addWorkoutView()">Request Join Page</button>'
 			);
 }
 function loginView(){
@@ -311,10 +318,10 @@ function loginView(){
 	$('body').html(
 				'<p>Login with username <input type="text" id="username1"></p>'+
 				'<p>Password<input type="password" id="pword"></p>'+
-				'<button onClick="login()">Login</button>'+
-				'<button onClick="createTeamView()">Create Team</button>'+
+				'<button onClick="login(); createTeamView();">Login</button>'+
 				'<button onClick="logout()">logout</button>'+
-				'<button onClick="mainMenu()">Back to the Team Manger Page</button>'
+				'<button onClick="addWorkoutView()">Add Workout Page</button>'+
+				'<button onClick="mainMenu()">Back to the Team Manger Page</button>'	
 				 );
 	
 //		  $("button").click(function(){
@@ -326,7 +333,6 @@ function loginView(){
 //			   '<button onclick="confirmJoin()">Confirm Join</button>'+
 //			   '</body'
 //			   );
-//		  });
 
 	
 }
@@ -346,11 +352,6 @@ function clearScreen(){
 			  );
 }
 
-
-function initialLoginView(){
-	createTeamView();
-}
-
 function mainMenu(){
 	
 	$('body').html(
@@ -365,7 +366,41 @@ function mainMenu(){
 		);
 }
 
+function addWorkoutView(){
+	$('body').html(
+	'<p>Title<input type="text" id="title"></p>'+
+	'<p>Duration in mins<input type="number" id="duration"></p>'+
+	'<p>Intensity<input type="number" id="intensity"></p>'+
+	'<p>Reps<input type="text" id="reps"></p>'+
+	
+	'<button onClick="addWorkout()">Add Workout</button>'+
+	'<button onClick="logout()">logout</button>'+
+	'<button onClick="initialLoginView()">Login</button>'
+	
+	);
+}
 
+function initialLoginView(){
+	createTeamView();
+}
 
+function userInter(){
+	addWorkoutView();
+}
+
+function confirmUserView(){
+	$('body').html(
+			'<p>Team ID to confirm<input type="text" id="teamid"></p>'+
+			'<p>User to confirm <input type="text" id="userconfirm"></p>'+
+			'<button onClick="confirmJoin()">Confirm Join</button>'
+			);
+}
+
+function requestJoinView(){
+	$('body').html(
+			'<p>Team ID to join <input type="text" id="teamid"></p>'+
+			'<button onClick="requestJoin()">Request Join Join</button>'
+			);
+}
 
 
