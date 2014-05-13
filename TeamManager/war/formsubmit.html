@@ -1,12 +1,12 @@
 <html>
-<form action="http://localhost:8888/teammanager" method="post">
+<form action="/teammanager" method="post">
   <input type="text" name="username" value="mydata" />
   <input type="text" name="password" value="mydata" />
   <input type="text" name="action" value="mydata" />
   <input type="submit" />
 </form>
 <br />
-<form action="http://localhost:8888/teammanager?action=newUser" method="post">
+<form action="/teammanager?action=newUser" method="post">
 NEW USER:
 <br />
   username <input type="text" name="username" value="mydata" /> <br />
@@ -19,30 +19,30 @@ NEW USER:
 </form>
 <br />
 CREATE TEAM:
-<form action="http://localhost:8888/teammanager?action=newTeam" method="post">
+<form action="/teammanager?action=newTeam" method="post">
   <input type="text" name="TeamName" value="mydata" />
   <input type="submit" />
 </form>
 Request Join:
-<form action="http://localhost:8888/teammanager?action=requestJoin" method="post">
+<form action="/teammanager?action=requestJoin" method="post">
   <input type="text" name="TeamID" value="mydata" />
   <input type="submit" />
 </form>
 
 Confirm Join:
-<form action="http://localhost:8888/teammanager?action=confirmJoin" method="post">
+<form action="/teammanager?action=confirmJoin" method="post">
   <input type="text" name="TeamID" value="mydata" />
   <input type="text" name="UserConfirm" value="mydata" />
   <input type="submit" />
 </form>
 
 Get User:
-http://localhost:8888/teammanager/users/username
+/teammanager/users/username
 
 <br />
 
 Get Team
-http://localhost:8888/teammanager/teams/teamID
+/teammanager/teams/teamID
 
 
 </html>

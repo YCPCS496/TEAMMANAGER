@@ -29,6 +29,7 @@ import edu.ycp.TeamManager.control.GetUserById;
 import edu.ycp.TeamManager.control.GetWorkoutById;
 import edu.ycp.TeamManager.control.RequestJoin;
 import edu.ycp.TeamManager.control.VerifyLogin;
+import edu.ycp.TeamManager.control.ViewAnnouncement;
 import edu.ycp.cs496.util.HashLoginData;
 
 @SuppressWarnings("serial")
@@ -175,7 +176,7 @@ public class TeamManagerServlet extends HttpServlet {
 		
 	}
 	
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+	public void don(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 		String action = req.getParameter("action");
 		
 		// post request must have an action
@@ -353,7 +354,7 @@ public class TeamManagerServlet extends HttpServlet {
 			if(check){
 				resp.setStatus(HttpServletResponse.SC_OK);
 				resp.setContentType("text/plain");
-				resp.getWriter().println("Team " + teamName + " created: " + team.getId());
+				resp.getWriter().println("Team " + teamName + " created: ");
 			}
 			else{
 				resp.setStatus(HttpServletResponse.SC_CONFLICT);
@@ -546,9 +547,10 @@ public class TeamManagerServlet extends HttpServlet {
 		}
 		
 		if(action.equals("viewAnnouncement")){
-			String userId = req.getParameter("userId");
+			HttpSession session = req.getSession();
+			String username = (String) session.getAttribute("user");
 			String announcementId = req.getParameter("announcementId");
-			if(userId == null || announcementId == null){
+			if(username == null || announcementId == null){
 				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				resp.setContentType("text/plain");
 				resp.getWriter().println("bad request");
@@ -556,15 +558,27 @@ public class TeamManagerServlet extends HttpServlet {
 				resp.getWriter().println("userId and announcementId");
 				return;
 			}
-			if(userId.equals("") || announcementId.equals("")){
+			if(username.equals("") || announcementId.equals("")){
 				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				resp.setContentType("text/plain");
 				resp.getWriter().println("bad request");
 				resp.getWriter().println("viewAnnoucement takes the following parameters:");
 				resp.getWriter().println("userId and announcementId");
+				return;
+			}
+			ViewAnnouncement controll = new ViewAnnouncement();
+			boolean check = controll.viewAnnouncement(announcementId, username);
+			if(check){
+				resp.setStatus(HttpServletResponse.SC_OK);
+				resp.setContentType("text/plain");
+				resp.getWriter().println("announcement marked as viewed");
 				return;
 			}
 			
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			resp.setContentType("text/plain");
+			resp.getWriter().println("Good request, but something went wrong");
+			return;
 			
 			
 		}
@@ -573,7 +587,9 @@ public class TeamManagerServlet extends HttpServlet {
 		if(action.equals("logout")){
 			HttpSession session = req.getSession();
 			session.invalidate();
-			resp.getWriter().println("Session cleared");
+			resp.setStatus(HttpServletResponse.SC_OK);
+			resp.getWriter().println("Logged Out");
+			return;
 		}
 	}
 }
