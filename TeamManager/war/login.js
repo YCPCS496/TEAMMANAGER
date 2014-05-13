@@ -305,7 +305,7 @@ function createTeamView(){
 			'<button onClick="logout()">logout</button>'+
 			'<button onClick="mainMenu()">Back to the Team Manger Page</button>'+
 			'<button onClick="addWorkoutView()">add Workout Page</button>'+
-			'<button onClick="confirmUserView()">Confirm A User</button>'
+			'<button onClick="confirmUserView()">Confirm A User</button>'+
 			'<button onClick="requestJoin()">Request A Team</button>'
 			
 			//'<button onClick="addWorkoutView()">Confirm Join Page</button>'
