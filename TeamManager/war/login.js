@@ -71,7 +71,7 @@ function createTeam(){
 
 }
 
-//not done
+//TODO:needs fixing (data)
 function requestJoin(){
 	//Sends a request to join a team
 	var teamNameVal = $("#teamName").val();
@@ -94,7 +94,7 @@ function requestJoin(){
 
 }
 
-/*
+
 function confirmJoin(){
 	//Confirms a join to a team
 	var teamNameVal = $("#teamName").val();
@@ -105,8 +105,7 @@ function confirmJoin(){
 	  type: "POST",
 	  url: param,
 	  data: {
-		TeamID: teamNameVal
-		UserConfirm:teamNameVal
+		TeamID: teamNameVal,
 	  },
 	  success: function(data, textStatus, jqXHR) {
 		// do something to let the user know what happened
@@ -117,7 +116,7 @@ function confirmJoin(){
 	});
 
 }
-*/
+
 
 
 function login(){
@@ -189,7 +188,7 @@ function createTeamView(){
 	$('body').html(
 			'<p>Team Name<input type="text" id="TeamName"></p>'+
 			'<button onclick="createTeam()">Create Team</button>'+
-			'<button onclick="getTeamList">Find Team</button>'
+			'<button onclick="getTeamList()">Find Team</button>'
 			);
 }
 function loginView(){
@@ -202,12 +201,17 @@ function loginView(){
 				'<button onclick="createTeamView()">Create Team</button>'
 				 );
 	
-	$(document).ready(function(){
 		  $("button").click(function(){
-		    $('body').insertAfter("body");
-		    	//$('body')
+			  $("p").insertAfter("p");
+			  
+			  $("body").html(
+			   '<body>'+
+			   '<p>Here is a list of things you can do</p>'+
+			   '<button onclick="confirmJoin()">Confirm Join</button>'+
+			   '</body'
+			   );
 		  });
-		});
+
 	
 }
 
@@ -222,10 +226,21 @@ function clearScreen(){
 			  '<p>Enter Email<input type="text" id="email1"></p>'+
 			  '<button onclick="validate()">Create User</button>'+
 			  '<button onclick="loginView()">Login</button>'
-			  );
+			  );;
+}
+
+function tester(){
 	
-	
-	alert("Test");
+	$("button").click(function(){
+		  $("p").insertAfter("p");
+		  
+		  $("body").html(
+		   '<body>'+
+		   '<p>Here is a list of things you can do</p>'+
+		   '<button onclick="confirmJoin()">Confirm Join</button>'+
+		   '</body'
+		   );
+	  });
 }
 
 
