@@ -523,6 +523,12 @@ public class TeamManagerServlet extends HttpServlet {
 					return;
 				}
 				AddWorkout work = new AddWorkout();
+				if(tryus.getTeamsOwned().size() ==1){
+					resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+					resp.setContentType("text/plain");
+					resp.getWriter().println("bad request, does the user own a team?");
+					return;
+				}
 				boolean check = work.addWorkout(proposedwork, tryus.getTeamsOwned().get(1));
 				if(check){
 					resp.setStatus(HttpServletResponse.SC_OK);

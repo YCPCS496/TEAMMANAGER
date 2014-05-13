@@ -43,6 +43,7 @@ function login(){
 		success: function(data, textStatus, jqXHR) {
 			// do something to let the user know what happened
 			//alert(data);
+			window.location.replace("/landingpage.html");
 			console.log(data);
 		},
 		dataType: 'text'
@@ -155,7 +156,7 @@ function addworkout(){
 		data: workout,
 		success: function(data, textStatus, jqXHR) {
 			// do something to let the user know what happened
-			//alert(data);
+			alert("Workout created");
 			console.log(data);
 		},
 		contentType: "application/json",
@@ -186,5 +187,21 @@ function addannouncement(){
 		},
 		contentType: "application/json",
 		dataType: "json"
+	});
+}
+function viewteams(){
+
+	$.ajax({
+		type: "GET",
+		url: "/teammanager/teams",
+		success: function(data, textStatus, jqXHR) {
+			// do something to let the user know what happened
+			for (var team in data) { 
+			   $("body").append(data[team].id+ "<br />");
+			}
+			alert(data);
+			//console.log(data);
+		},
+		dataType: 'text'
 	});
 }
