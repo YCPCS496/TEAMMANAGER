@@ -144,7 +144,7 @@ function getTeamList(){
 	
 	$.ajax({
 	      type: "GET",
-		  url: "/teammanager/Teams",
+		  url: "/teammanager/teams",
 		  success: function(data){
 		  // do something to let the user know what happened
 			 alert(data);

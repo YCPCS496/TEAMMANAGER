@@ -1,28 +1,5 @@
 <html>
-<form action="/teammanager" method="post">
-  <input type="text" name="username" value="mydata" />
-  <input type="text" name="password" value="mydata" />
-  <input type="text" name="action" value="mydata" />
-  <input type="submit" />
-</form>
-<br />
-<form action="/teammanager?action=newUser" method="post">
-NEW USER:
-<br />
-  username <input type="text" name="username" value="mydata" /> <br />
-  password<input type="text" name="password1" value="mydata" /> <br />
-  password<input type="text" name="password2" value="mydata" /> <br />
-  first name<input type="text" name="firstname" value="mydata" /> <br />
-  last name<input type="text" name="lastname" value="mydata" /> <br />
-  email <input type="text" name="email" value="mydata" /> <br />
-  <input type="submit" />
-</form>
-<br />
-CREATE TEAM:
-<form action="/teammanager?action=newTeam" method="post">
-  <input type="text" name="TeamName" value="mydata" />
-  <input type="submit" />
-</form>
+
 Request Join:
 <form action="/teammanager?action=requestJoin" method="post">
   <input type="text" name="TeamID" value="mydata" />
