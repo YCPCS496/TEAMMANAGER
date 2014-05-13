@@ -306,7 +306,7 @@ function createTeamView(){
 			'<button onClick="mainMenu()">Back to the Team Manger Page</button>'+
 			'<button onClick="addWorkoutView()">add Workout Page</button>'+
 			'<button onClick="confirmUserView()">Confirm A User</button>'+
-			'<button onClick="requestJoin()">Request A Team</button>'
+			'<button onClick="requestJoinView()">Request A Team</button>'
 			
 			//'<button onClick="addWorkoutView()">Confirm Join Page</button>'
 			//'<button onClick="addWorkoutView()">Request Join Page</button>'
@@ -399,7 +399,7 @@ function confirmUserView(){
 function requestJoinView(){
 	$('body').html(
 			'<p>Team ID to join <input type="text" id="teamid"></p>'+
-			'<button onClick="requestJoin()">Request Join Join</button>'
+			'<button onClick="requestJoin()">Request Join </button>'
 			);
 }
 
