@@ -44,10 +44,9 @@ var emailVal = $("#email1").val();
 		  dataType: 'text'
 	});
 		
-		alert("Validate Worked")
 	}
 	
-	
+	alert("User Created!");
 }
 
 function createTeam(){
@@ -120,7 +119,7 @@ function login(){
 	//checks the database to see if the user is there and logs the user in 
 	var usernameVal = $("#username1").val();
 	var password1Val = $("#pword").val();
-
+	
 	if ((usernameVal|| password1Val)== ""){
 		event.preventDefault();
 	}
@@ -145,33 +144,61 @@ function getTeamList(){
 	
 	$.ajax({
 	      type: "GET",
-		  url: "http://localhost:8888/teammanager/teams/",
+		  url: "http://localhost:8888/teammanager/Teams",
 		  success: function(data){
 		  // do something to let the user know what happened
 			 alert(data);
+			 console.log(data);
 		},
-		  dataType: 'text'
+			contentType: "application/json",
+			dataType: "json"
 		});
 	
 }
 
-//TODO: finsh
-function getTeam(TeamName){
-	//Get team
-	var teamdata=TeamName;
-	
-	//get methods
-		$.ajax({
+function getTeamsId(){
+	$.ajax({
 	      type: "GET",
-		  url: "http://localhost:8888/teammanager/teams/"+teamdata,
-		  data: teamdata,
-		  success: function(data, textStatus, jqXHR) {
+		  url: "http://localhost:8888/teammanager/Teams/teamid",
+		  success: function(data){
 		  // do something to let the user know what happened
-		  alert(data);
-		  console.log(data);
+			 console.log(data);
 		},
-		  dataType: 'text'
+			contentType: "application/json",
+			dataType: "json"
 		});
+	
+}
+
+
+function getUsers(){
+	$.ajax({
+	      type: "GET",
+		  url: "http://localhost:8888/teammanager/users",
+		  success: function(data){
+		  // do something to let the user know what happened
+			 console.log(data);
+		},
+			contentType: "application/json",
+			dataType: "json"
+		});
+	
+
+}
+
+function getUserId(){
+	$.ajax({
+	      type: "GET",
+		  url: "http://localhost:8888/teammanager/users/userid",
+		  success: function(data){
+		  // do something to let the user know what happened
+			 console.log(data);
+		},
+			contentType: "application/json",
+			dataType: "json"
+		});
+	
+
 }
 
 function newAnnouncement(){
@@ -264,14 +291,18 @@ function logout(){
 		},
 		dataType: 'text'
 	});
+	
+	alert("You're loggedout!");
 }
 
 
 function createTeamView(){
 	$('body').html(
 			'<p>Team Name<input type="text" id="TeamName"></p>'+
-			'<button onclick="createTeam()">Create Team</button>'+
-			'<button onclick="getTeamList()">Find Team</button>'
+			'<button onClick="createTeam()">Create Team</button>'+
+			'<button onclick="getTeamList()">Find Team</button>'+
+			'<button onClick="logout()">logout</button>'+
+			'<button onClick="mainMenu()">Back to the Team Manger Page</button>'
 			);
 }
 function loginView(){
@@ -280,20 +311,22 @@ function loginView(){
 	$('body').html(
 				'<p>Login with username <input type="text" id="username1"></p>'+
 				'<p>Password<input type="password" id="pword"></p>'+
-				'<button onclick="login()">Login</button>'+
-				'<button onclick="createTeamView()">Create Team</button>'
+				'<button onClick="login(); confirmJoin();">Login</button>'+
+				'<button onClick="createTeamView()">Create Team</button>'+
+				'<button onClick="logout()">logout</button>'+
+				'<button onClick="mainMenu()">Back to the Team Manger Page</button>'
 				 );
 	
-		  $("button").click(function(){
-			  $("p").insertAfter("p");
-			  
-			  $("body").html(
-			   '<body>'+
-			   '<p>Here is a list of things you can do</p>'+
-			   '<button onclick="confirmJoin()">Confirm Join</button>'+
-			   '</body'
-			   );
-		  });
+//		  $("button").click(function(){
+//			  $("p").insertAfter("p");
+//			  
+//			  $("body").html(
+//			   '<body>'+
+//			   '<p>Here is a list of things you can do</p>'+
+//			   '<button onclick="confirmJoin()">Confirm Join</button>'+
+//			   '</body'
+//			   );
+//		  });
 
 	
 }
@@ -307,23 +340,32 @@ function clearScreen(){
 			  '<p>First Name<input type="text" id="firstName"></p>'+
 			  '<p>Last Name<input type="text" id="lastName"></p>'+
 			  '<p>Enter Email<input type="text" id="email1"></p>'+
-			  '<button onclick="createUser()">Create User</button>'+
-			  '<button onclick="loginView()">Login</button>'
-			  );;
+			  '<button onClick="createUser()">Create User</button>'+
+			  '<button onClick="loginView()">Login</button>'+
+			  '<button onClick="logout()">logout</button>'
+			  );
 }
 
-function tester(){
-	
-	$("button").click(function(){
-		  $("p").insertAfter("p");
-		  
-		  $("body").html(
-		   '<body>'+
-		   '<p>Here is a list of things you can do</p>'+
-		   '<button onclick="confirmJoin()">Confirm Join</button>'+
-		   '</body'
-		   );
-	  });
+
+function initialLoginView(){
+	createTeamView();
 }
+
+function mainMenu(){
+	
+	$('body').html(
+		'<h1>TEAM MANGER</h1>'+
+		'<p>Login with username <input type="text" id="username1"></p>' +
+		'<p>Enter password<input type="password" id="pword"></p>' +
+		'<button onClick="login(); initialLoginView();">Login</button>' +
+		
+		'<button onClick="clearScreen()">Create User</button>' +
+		'<button onClick="loginView()">More team options</button>' +
+		'<button onClick="logout()">logout</button>'
+		);
+}
+
+
+
 
 
