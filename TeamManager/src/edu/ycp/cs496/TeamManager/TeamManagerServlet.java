@@ -176,7 +176,7 @@ public class TeamManagerServlet extends HttpServlet {
 		
 	}
 	
-	public void don(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 		String action = req.getParameter("action");
 		
 		// post request must have an action
@@ -469,7 +469,7 @@ public class TeamManagerServlet extends HttpServlet {
 					return;
 				}
 				AddAnnouncement control = new AddAnnouncement();
-				boolean check = control.addAnnouncement(proposedann, tryus.getTeamsOwned().get(0));
+				boolean check = control.addAnnouncement(proposedann, tryus.getTeamsOwned().get(1));
 				if(check){
 					resp.setStatus(HttpServletResponse.SC_OK);
 					resp.setContentType("text/plain");
@@ -523,7 +523,7 @@ public class TeamManagerServlet extends HttpServlet {
 					return;
 				}
 				AddWorkout work = new AddWorkout();
-				boolean check = work.addWorkout(proposedwork, tryus.getTeamsOwned().get(0));
+				boolean check = work.addWorkout(proposedwork, tryus.getTeamsOwned().get(1));
 				if(check){
 					resp.setStatus(HttpServletResponse.SC_OK);
 					resp.setContentType("text/plain");
