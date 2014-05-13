@@ -311,7 +311,7 @@ function loginView(){
 	$('body').html(
 				'<p>Login with username <input type="text" id="username1"></p>'+
 				'<p>Password<input type="password" id="pword"></p>'+
-				'<button onClick="login(); confirmJoin();">Login</button>'+
+				'<button onClick="login()">Login</button>'+
 				'<button onClick="createTeamView()">Create Team</button>'+
 				'<button onClick="logout()">logout</button>'+
 				'<button onClick="mainMenu()">Back to the Team Manger Page</button>'
